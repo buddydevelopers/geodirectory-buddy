@@ -116,13 +116,16 @@ class Geobuddy {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-geobuddy-admin.php';
 
+		// Initialize custom fields
+		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-geobuddy-custom-fields.php';
+		
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-geobuddy-public.php';
 
-		$this->loader = new Geobuddy_Loader();
+		$this->loader = new Geobuddy_Loader();	
 
 	}
 
@@ -153,6 +156,7 @@ class Geobuddy {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Geobuddy_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_cf = new Geobuddy_Custom_Fields();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
