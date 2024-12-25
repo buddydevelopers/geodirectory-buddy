@@ -51,7 +51,7 @@ class Geobuddy_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
+		
 	}
 
 	/**
@@ -98,6 +98,43 @@ class Geobuddy_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/geobuddy-admin.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	/**
+	 * Add options page to the admin menu
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_plugin_admin_menu() {
+		// Add main menu item
+		add_menu_page(
+			__('GeoBuddy Settings', 'geobuddy'), // Page title
+			__('GeoBuddy', 'geobuddy'),         // Menu title
+			'manage_options',                    // Capability required
+			'geobuddy',                         // Menu slug
+			array($this, 'display_plugin_admin_page'), // Callback function
+			'dashicons-admin-site',             // Icon
+			25                                  // Position in menu
+		);
+
+		// Add only one submenu item that matches the parent
+		add_submenu_page(
+			'geobuddy',                         // Parent slug
+			__('Settings', 'geobuddy'),         // Page title
+			__('Settings', 'geobuddy'),         // Menu title
+			'manage_options',                    // Capability required
+			'geobuddy',                         // Menu slug (same as parent)
+			array($this, 'display_plugin_admin_page') // Callback function
+		);
+	}
+
+	/**
+	 * Render the admin page with settings sections
+	 *
+	 * @since    1.0.0
+	 */
+	public function display_plugin_admin_page() {
+		include_once 'partials/geobuddy-admin-display.php';
 	}
 
 }
