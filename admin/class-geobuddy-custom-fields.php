@@ -20,6 +20,8 @@ class Geobuddy_Custom_Fields {
         // Add hook for GeoDirectory predefined custom fields
         add_filter('geodir_custom_fields_predefined', array($this, 'add_custom_field_types'), 10, 1);
         // add_filter('geodir_custom_field_output_text_key_bd_virtual_tour', array($this, 'custom_output_virtual_tour'), 10, 3);
+        add_filter('geodir_custom_field_output_phone_key_whatsapp', array($this, 'custom_output_whatsapp'), 10, 4);
+        add_filter('geodir_custom_field_output_text_key_skype', array($this, 'custom_output_skype'), 10, 4);
     }
 
     /**
@@ -103,7 +105,56 @@ class Geobuddy_Custom_Fields {
                 'field_icon'     => 'fab fa-tiktok',
             )
         );
-
+        // Whatsapp Number Field
+        $fields['whatsapp'] = array(
+            'field_type'  => 'phone',
+            'class'       => 'gd-phone',
+            'icon'        => 'fab fa-whatsapp',
+            'name'        => __('Whatsapp', 'geobuddy'),
+            'description' => __('Adds a Whatsapp number field', 'geobuddy'),
+            'defaults'    => array(
+                'data_type'      => 'TEXT',
+                'title'          => __('BD-Whatsapp', 'geobuddy'),
+                'admin_title'    => __('BD-Whatsapp', 'geobuddy'),
+                'frontend_title' => __('Whatsapp', 'geobuddy'),
+                'frontend_desc'  => __('Enter your Whatsapp', 'geobuddy'),
+                'desc'           => __('Enter your Whatsapp', 'geobuddy'),
+                'htmlvar_name'   => 'bd_Whatsapp',
+                'placeholder'    => '+918097876910',
+                'is_required'    => false,
+                'is_active'      => true,
+                'validation_pattern' => '\+\d{3}[ ]?(\d+(-| )?)+',
+                'validation_msg' => __('Please enter a valid Whatsapp number', 'geobuddy'),
+                'default_value'  => '',
+                'show_in' =>  '[detail],[mapbubble]',
+                'field_icon'     => 'fab fa-whatsapp',
+            )
+        );
+        // Skype Field
+        $fields['skype'] = array(
+            'field_type'  => 'text',
+            'class'       => 'gd-text',
+            'icon'        => 'fab fa-skype',
+            'name'        => __('Skype', 'geobuddy'),
+            'description' => __('Adds a Skype number field', 'geobuddy'),
+            'defaults'    => array(
+                'data_type'      => 'TEXT',
+                'title'          => __('BD-Skype', 'geobuddy'),
+                'admin_title'    => __('BD-Skype', 'geobuddy'),
+                'frontend_title' => __('Skype', 'geobuddy'),
+                'frontend_desc'  => __('Enter your Skype', 'geobuddy'),
+                'desc'           => __('Enter your Skype', 'geobuddy'),
+                'htmlvar_name'   => 'bd_skype',
+                'placeholder'    => 'naveen.giri6',
+                'is_required'    => false,
+                'is_active'      => true,
+                'validation_pattern' => '',
+                'validation_msg' => __('Please enter a valid Skype ID', 'geobuddy'),
+                'default_value'  => '',
+                'show_in' =>  '[detail],[mapbubble]',
+                'field_icon'     => 'fab fa-skype',
+            )
+        );
         // 360° Virtual Tour Field
         $fields['virtual_tour'] = array(
             'field_type'  => 'url',
@@ -132,7 +183,7 @@ class Geobuddy_Custom_Fields {
 
         return $fields;
     }
-    
+
     /**
      * Custom output for Virtual Tour field
      */
@@ -148,5 +199,93 @@ class Geobuddy_Custom_Fields {
             return $output;
         }
         return '';
+    }
+    /**
+     * Custom output for WhatsApp Field.
+     */
+    public function custom_output_whatsapp( $html,$location,$cf,$output ){
+        global $gd_post;
+        if ($gd_post->{$cf['htmlvar_name']}):
+            $design_style = geodir_design_style();
+            $field_icon = geodir_field_icon_proccess($cf);
+            $output = geodir_field_output_process($output);
+            if (strpos($field_icon, 'http') !== false) {
+                $field_icon_af = '';
+            } elseif ($field_icon == '') {
+                $field_icon_af = $design_style ? '<i class="fab fa-whatsapp fa-fw" aria-hidden="true"></i> ' : '<i class="fab fa-whatsapp" aria-hidden="true"></i>';
+            } else {
+                $field_icon_af = $field_icon;
+                $field_icon = '';
+            }
+
+            $raw_value = stripslashes( $gd_post->{$cf['htmlvar_name']} );
+            $value = '<a href="https://api.whatsapp.com/send?phone=' . preg_replace('/[^0-9+]/', '', $gd_post->{$cf['htmlvar_name']}) . '&text=Hey%2C%20How%20you%20doing%3F">' . __($cf['frontend_title'], 'geodirectory') . '</a>';
+
+            if ( ! empty( $output ) && isset( $output['raw'] ) ) {
+                // Database value.
+                return $raw_value;
+            } elseif ( ! empty( $output ) && isset( $output['strip'] ) ) {
+                // Stripped value.
+                return $value;
+            }
+
+            $html = '<div class="geodir_post_meta ' . $cf['css_class'] . ' geodir-field-' . $cf['htmlvar_name'] . '">';
+
+            $maybe_secondary_class = isset($output['icon']) ? 'gv-secondary' : '';
+
+            if($output=='' || isset($output['icon'])) $html .= '<span class="geodir_post_meta_icon geodir-i-phone" style="' . $field_icon . '">' . $field_icon_af;
+            if($output=='' || isset($output['value']))$html .= $value;
+            if($output=='' || isset($output['icon']))$html .= '</span>';
+
+            $html .= '</div>';
+
+        endif;
+    
+        return $html;
+    }
+    /**
+     * Custom output for Skype Field.
+     */
+    public function custom_output_skype( $html,$location,$cf,$output ){
+        global $gd_post;
+        
+        if (isset($gd_post->{$cf['htmlvar_name']}) && $gd_post->{$cf['htmlvar_name']} != '' ):
+    
+            $class = ($cf['htmlvar_name'] == 'geodir_timing') ? "geodir-i-time" : "geodir-i-text";
+
+            $field_icon = geodir_field_icon_proccess($cf);
+            if (strpos($field_icon, 'http') !== false) {
+                $field_icon_af = '';
+            } elseif ($field_icon == '') {
+                $field_icon_af = $design_style ? '<i class="fab fa-skype" aria-hidden="true"></i> ' : '<i class="fab fa-skype" aria-hidden="true"></i>';
+            } else {
+                $field_icon_af = $field_icon;
+                $field_icon = '';
+            }
+
+            $raw_value = stripslashes( $gd_post->{$cf['htmlvar_name']} );
+            $value = '<a href="skype:' . $gd_post->{$cf['htmlvar_name']} . '?chat">' . __($cf['frontend_title'], 'geodirectory') . '</a>';
+
+            if ( ! empty( $output ) && isset( $output['raw'] ) ) {
+                // Database value.
+                return $raw_value;
+            } elseif ( ! empty( $output ) && isset( $output['strip'] ) ) {
+                // Stripped value.
+                return $value;
+            }
+
+            $html = '<div class="geodir_post_meta ' . $cf['css_class'] . ' geodir-field-' . $cf['htmlvar_name'] . '">';
+
+            $maybe_secondary_class = isset($output['icon']) ? 'gv-secondary' : '';
+
+            if($output=='' || isset($output['icon'])) $html .= '<span class="geodir_post_meta_icon geodir-i-phone" style="' . $field_icon . '">' . $field_icon_af;
+            if($output=='' || isset($output['value']))$html .= $value;
+            if($output=='' || isset($output['icon']))$html .= '</span>';
+
+            $html .= '</div>';
+            
+        endif;
+    
+        return $html;
     }
 } 
