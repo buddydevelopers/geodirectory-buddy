@@ -2,3 +2,45 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+/* GeoBuddy Custom Fields Styles */
+.geodir_post_meta.gd-social-field,
+.geodir_post_meta.gd-virtual-tour {
+    padding: 10px 0;
+    margin: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.geodir_post_meta_icon {
+    margin-right: 8px;
+}
+
+.geodir_post_meta_icon i {
+    width: 24px;
+    text-align: center;
+}
+
+.gd-social-field i.fab.fa-linkedin {
+    color: #0077b5;
+}
+
+.gd-social-field i.fab.fa-youtube {
+    color: #ff0000;
+}
+
+.gd-social-field i.fab.fa-tiktok {
+    color: #000000;
+}
+
+.gd-virtual-tour i.fas.fa-vr-cardboard {
+    color: #4a90e2;
+}
+
+.geodir_post_meta_content a {
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.geodir_post_meta_content a:hover {
+    text-decoration: underline;
+}

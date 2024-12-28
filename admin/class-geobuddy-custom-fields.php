@@ -28,6 +28,28 @@ class Geobuddy_Custom_Fields {
      * Add predefined custom fields to GeoDirectory
      */
     public function add_custom_field_types($fields) {
+        $options = get_option('geobuddy_custom_fields', array());
+        
+        // Only add fields that are enabled
+        if (empty($options['linkedin']) && isset($fields['linkedin'])) {
+            unset($fields['linkedin']);
+        }
+        if (empty($options['whatsapp']) && isset($fields['whatsapp'])) {
+            unset($fields['whatsapp']);
+        }
+        if (empty($options['tiktok']) && isset($fields['tiktok'])) {
+            unset($fields['tiktok']);
+        }
+        if (empty($options['youtube']) && isset($fields['youtube'])) {
+            unset($fields['youtube']);
+        }
+        if (empty($options['skype']) && isset($fields['skype'])) {
+            unset($fields['skype']);
+        }
+        if (empty($options['virtual_tour']) && isset($fields['virtual_tour'])) {
+            unset($fields['virtual_tour']);
+        }
+
         // LinkedIn Profile Field
         $fields['linkedin'] = array(
             'field_type'  => 'url',

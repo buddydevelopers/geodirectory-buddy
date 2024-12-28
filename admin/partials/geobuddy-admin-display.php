@@ -27,7 +27,13 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general';
     <div class="tab-content">
         <?php if ($active_tab == 'general'): ?>
             <div class="general-settings">
-                <p>General Settings Content</p>
+                <form method="post" action="options.php">
+                    <?php
+                    settings_fields('geobuddy_options');
+                    do_settings_sections('geobuddy');
+                    submit_button();
+                    ?>
+                </form>
             </div>
         <?php else: ?>
             <div class="map-settings">
@@ -36,3 +42,20 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general';
         <?php endif; ?>
     </div>
 </div>
+
+<style>
+.form-table th {
+    width: 250px;
+}
+.form-table td label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.geobuddy-settings-section {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccd0d4;
+}
+</style>

@@ -52,6 +52,10 @@ class Geobuddy_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		
+		// Add hook for admin menu
+		add_action('admin_menu', array($this, 'add_plugin_admin_menu'));
+		add_action('admin_init', array($this, 'register_settings'));
+
 	}
 
 	/**
@@ -135,6 +139,86 @@ class Geobuddy_Admin {
 	 */
 	public function display_plugin_admin_page() {
 		include_once 'partials/geobuddy-admin-display.php';
+	}
+
+	/**
+	 * Register settings
+	 */
+	public function register_settings() {
+		// Register a setting group
+		register_setting(
+			'geobuddy_options',
+			'geobuddy_custom_fields',
+			array('sanitize_callback' => array($this, 'sanitize_custom_fields'))
+		);
+
+		// Add settings section
+		add_settings_section(
+			'geobuddy_custom_fields_section',
+			__('Custom Fields Settings', 'geobuddy'),
+			array($this, 'custom_fields_section_callback'),
+			'geobuddy'
+		);
+
+		// Add settings fields
+		$custom_fields = array(
+			'linkedin' => __('LinkedIn Profile', 'geobuddy'),
+			'whatsapp' => __('WhatsApp', 'geobuddy'),
+			'tiktok' => __('TikTok Profile', 'geobuddy'),
+			'youtube' => __('YouTube Channel', 'geobuddy'),
+			'skype' => __('Skype', 'geobuddy'),
+			'virtual_tour' => __('360° Virtual Tour URL', 'geobuddy')
+		);
+
+		foreach ($custom_fields as $field_id => $field_label) {
+			add_settings_field(
+				'geobuddy_field_' . $field_id,
+				$field_label,
+				array($this, 'custom_field_callback'),
+				'geobuddy',
+				'geobuddy_custom_fields_section',
+				array('field_id' => $field_id)
+			);
+		}
+	}
+
+	/**
+	 * Section callback
+	 */
+	public function custom_fields_section_callback() {
+		echo '<p>' . __('Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy') . '</p>';
+	}
+
+	/**
+	 * Field callback
+	 */
+	public function custom_field_callback($args) {
+		$options = get_option('geobuddy_custom_fields', array());
+		$field_id = $args['field_id'];
+		$checked = isset($options[$field_id]) ? $options[$field_id] : 1; // Default to enabled
+		?>
+		<label>
+			<input type="checkbox" 
+				   name="geobuddy_custom_fields[<?php echo esc_attr($field_id); ?>]" 
+				   value="1" 
+				   <?php checked(1, $checked); ?>>
+			<?php _e('Enable this field', 'geobuddy'); ?>
+		</label>
+		<?php
+	}
+
+	/**
+	 * Sanitize custom fields
+	 */
+	public function sanitize_custom_fields($input) {
+		$new_input = array();
+		$custom_fields = array('linkedin', 'whatsapp', 'tiktok', 'youtube', 'skype', 'virtual_tour');
+		
+		foreach ($custom_fields as $field) {
+			$new_input[$field] = isset($input[$field]) ? 1 : 0;
+		}
+		
+		return $new_input;
 	}
 
 }
