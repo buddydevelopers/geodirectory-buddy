@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -15,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       GeoBuddy
  * Plugin URI:        https://https://buddydevelopers.com
- * Description:       GeoBuddy is the ultimate companion for the GeoDirectory plugin, designed to extend its core functionality and unlock new possibilities for directory-based WordPress websites. 
+ * Description:       GeoBuddy is the ultimate companion for the GeoDirectory plugin, designed to extend its core functionality and unlock new possibilities for directory-based WordPress websites.
  * Version:           1.0.0
  * Author:            BuddyDevelopers
  * Author URI:        https://https://buddydevelopers.com/
@@ -36,6 +35,14 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'GEOBUDDY_VERSION', '1.0.0' );
+
+if ( ! defined( 'GEOBUDDY_PLUGINS_URL' ) ) {
+	define( 'GEOBUDDY_PLUGINS_URL', plugin_dir_url( __FILE__ ) );
+}
+
+if ( ! defined( 'GEOBUDDY_PLUGINS_PATH' ) ) {
+	define( 'GEOBUDDY_PLUGINS_PATH', plugin_dir_path( __FILE__ ) );
+}
 
 /**
  * The code that runs during plugin activation.
@@ -77,6 +84,5 @@ function run_geobuddy() {
 
 	$plugin = new Geobuddy();
 	$plugin->run();
-
 }
 run_geobuddy();
