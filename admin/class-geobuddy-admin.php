@@ -142,6 +142,7 @@ class Geobuddy_Admin {
 	 * Register settings
 	 */
 	public function register_settings() {
+
 		// Register a setting group.
 		register_setting(
 			'geobuddy_options',
@@ -177,13 +178,117 @@ class Geobuddy_Admin {
 				array( 'field_id' => $field_id )
 			);
 		}
+
+		if ( ! geobuddy_check_gd_stepwise_form_exists() ) {
+			// Register a single setting for all options.
+			register_setting(
+				'geobuddy_options',
+				'bd_stepwise_settings',
+				array(
+					'sanitize_callback' => array( $this, 'sanitize_stepwise_settings' ),
+				)
+			);
+
+			// Register a Stepwise form setting group.
+			register_setting(
+				'geobuddy_options',
+				'bd_stepwise_style',
+				array( 'sanitize_callback' => array( $this, 'sanitize_geobuddy_stepwise_form' ) )
+			);
+
+			// Add settings section.
+			add_settings_section(
+				'geobuddy_stepwise_form_fields_section',
+				__( 'Geodirectory Stepwise Forms Setting', 'geobuddy' ),
+				array( $this, 'stepwise_form_fields_section_callback' ),
+				'geobuddy_stepwise_form'
+			);
+
+			add_settings_field(
+				'geobuddy_field_',
+				'Form Style',
+				array( $this, 'geobuddy_stepwise_form_fields_callback' ),
+				'geobuddy_stepwise_form',
+				'geobuddy_stepwise_form_fields_section',
+				array( 'field_id' => 'bd_stepwise_slide_style' )
+			);
+
+			$gd_color_array = array( 'active', 'completed' );
+
+			foreach ( $gd_color_array as $gd_color ) {
+				// Define an array of color settings.
+				$gd_color_array = array(
+					'active'    => __( 'Active Step Color', 'geobuddy' ),
+					'completed' => __( 'Completed Step Color', 'geobuddy' ),
+				);
+
+				foreach ( $gd_color_array as $key => $label ) {
+					// Register each color setting.
+					register_setting(
+						'geobuddy_options',
+						"bd_{$key}_step_color",
+						array(
+							'sanitize_callback' => 'sanitize_hex_color',
+						)
+					);
+
+					// Add a settings field for each color.
+					add_settings_field(
+						"geobuddy_field_{$key}_step_color",
+						$label,
+						array( $this, 'geobuddy_stepwise_form_color_fields_callback' ),
+						'geobuddy_stepwise_form',
+						'geobuddy_stepwise_form_fields_section',
+						array(
+							'field_id'  => "bd_{$key}_step_color",
+							'label_for' => "bd-gsf-{$key}-steps-color",
+						)
+					);
+				}
+			}
+		}
 	}
+
+	/**
+	 * Sanitize stepwise settings.
+	 *
+	 * @param array $input The unsanitized input.
+	 * @return string The sanitized JSON string.
+	 */
+	public function sanitize_stepwise_settings( $input ) {
+		// Fetch individual settings for colors.
+		$active_step_color    = get_option( 'bd_active_step_color', '#ff9800' ); // Default color.
+		$completed_step_color = get_option( 'bd_completed_step_color', '#07b51b' ); // Default color.
+		$default_settings     = array(
+			'design'               => 'stepwise',
+			'active_step_color'    => $active_step_color,
+			'completed_step_color' => $completed_step_color,
+		);
+
+		// Merge defaults with incoming settings.
+		$sanitized_settings = wp_parse_args( $input, $default_settings );
+
+		// Validate hex colors.
+		$sanitized_settings['active_step_color']    = sanitize_hex_color( $sanitized_settings['active_step_color'] );
+		$sanitized_settings['completed_step_color'] = sanitize_hex_color( $sanitized_settings['completed_step_color'] );
+
+		// Return as a JSON-encoded string.
+		return json_encode( $sanitized_settings );
+	}
+
 
 	/**
 	 * Section callback
 	 */
 	public function custom_fields_section_callback() {
 		echo '<p>' . __( 'Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy' ) . '</p>';
+	}
+
+	/**
+	 * Section callback
+	 */
+	public function stepwise_form_fields_section_callback() {
+		echo '<p>' . __( 'Geodirectory Stepwise Forms Fields', 'geobuddy' ) . '</p>';
 	}
 
 	/**
@@ -207,6 +312,38 @@ class Geobuddy_Admin {
 	}
 
 	/**
+	 *  Field callback.
+	 *
+	 * @param  Array $args Arguments.
+	 */
+	public function geobuddy_stepwise_form_fields_callback( $args ) {
+		$options = get_option( 'bd_stepwise_style', array() );
+		?>
+		<select name="bd_stepwise_style" class="custom-select form-select mw-100" id="bd_stepwise_slide_style">
+			<option value="stepwise" <?php echo selected( $options, 'stepwise', false ); ?>>Stepwise</option>
+		</select>
+		<?php
+	}
+
+	/**
+	 * Callback function to render color input fields.
+	 *
+	 * @param array $args Arguments passed to the callback.
+	 */
+	public function geobuddy_stepwise_form_color_fields_callback( $args ) {
+		$field_id = $args['field_id'];
+		$value    = get_option( $field_id, '#ffffff' ); // Default to white color.
+		?>
+	<input
+		type="color"
+		name="<?php echo esc_attr( $field_id ); ?>"
+		id="<?php echo esc_attr( $args['label_for'] ); ?>"
+		value="<?php echo esc_attr( $value ); ?>"
+	>
+		<?php
+	}
+
+	/**
 	 * Sanitize custom fields
 	 *
 	 * @param  Array $input Input.
@@ -220,5 +357,18 @@ class Geobuddy_Admin {
 		}
 
 		return $new_input;
+	}
+
+	/**
+	 * Sanitize the bd_stepwise_style field.
+	 *
+	 * @param  array $input The input data from the form.
+	 * @return string Sanitized value.
+	 */
+	public function sanitize_geobuddy_stepwise_form( $input ) {
+		// Ensure the input is sanitized.
+		$sanitized_input = sanitize_text_field( $input );
+
+		return $sanitized_input;
 	}
 }

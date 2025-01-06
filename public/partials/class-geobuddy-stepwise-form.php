@@ -78,106 +78,11 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 			add_filter( 'geodir_custom_field_input_bdsteps', array( $this, 'geodir_cfi_bdsteps' ), 10, 2 );
 			add_filter( 'geodir_custom_fields', array( $this, 'geodir_custom_field_bdsteps' ), 10, 2 );
-			add_action( 'admin_menu', array( $this, 'buddy_register_stepwise_menu_page' ), 12 );
 
 			// Add progress bar.
 			add_action( 'geodir_before_add_listing_form', array( $this, 'geodir_before_add_listing_form_callback' ), 10, 3 );
 			add_action( 'geodir_add_listing_form_end', array( $this, 'geodir_add_listing_form_end_custom_callback' ), 10, 3 );
 			add_filter( 'aui_screen_ids', array( $this, 'buddy_stepwise_screen' ), 10, 1 );
-		}
-
-		/**
-		 * Register a stepwise menu page.
-		 */
-		public function buddy_register_stepwise_menu_page() {
-			add_menu_page(
-				__( 'Geodirectory Stepwise Forms', 'textdomain' ),
-				'Stepwise form',
-				'manage_options',
-				'stepwise-form',
-				array( $this, 'gd_stepwise_form_menu_page' ),
-				'dashicons-feedback',
-				6
-			);
-		}
-
-		/**
-		 * Display a stepwise menu page
-		 */
-		public function gd_stepwise_form_menu_page() {
-			if ( isset( $_GET['save_form'] ) && ! empty( $_GET['save_form'] ) ) {
-				if ( ! empty( $_GET['stepwise-nonce'] ) && wp_verify_nonce( $_GET['stepwise-nonce'], 'buddy_stepwise_form_nonce_check' ) ) {
-					if ( ! empty( $_GET['bd_stepwise_style'] ) ) {
-						$bd_stepwise_settings['design'] = sanitize_text_field( $_GET['bd_stepwise_style'] );
-					}
-					if ( ! empty( $_GET['bd_active_step_color'] ) ) {
-						$bd_stepwise_settings['active_step_color'] = sanitize_text_field( $_GET['bd_active_step_color'] );
-					}
-					if ( ! empty( $_GET['bd_completed_step_color'] ) ) {
-						$bd_stepwise_settings['completed_step_color'] = sanitize_text_field( $_GET['bd_completed_step_color'] );
-					}
-					update_option( 'bd_stepwise_settings', json_encode( $bd_stepwise_settings ) );
-				}
-			}
-
-			$bd_stepwise_settings = $this->get_settings(); // get setting object.
-			$bd_current_design    = function_exists( 'geodir_design_style' ) ? geodir_design_style() : ''; // Geodirectory Current design.
-			?>
-			<div class="wrap gd-stepwiseform bsui">
-				<h1><?php echo __( 'Geodirectory Stepwise Forms', 'gd-stepwise-form' ); ?></h1>
-				<form class="containerx" action="?page=stepwise-form">
-					<div class="accordion ">
-						<div class="card p-0 mw-100 border-0 shadow-sm">
-							<div class="card-header bg-white rounded-top">
-								<h5 class="gd-settings-title h5 mb-0 "><?php echo __( 'Form Style Settings', 'gd-stepwise-form' ); ?></h5>
-							</div>
-							<div class="card-body">
-								<div class="row mb-3">
-									<div class="col-sm-3">
-										<label for="bd_stepwise_slide_style" class="font-weight-bold fw-bold col-form-label  form-label"><?php echo __( 'Form Style', 'gd-stepwise-form' ); ?></label>
-									</div>
-									<div class="col-sm-9">
-										<select name="bd_stepwise_style" class="custom-select form-select mw-100" id="bd_stepwise_slide_style">
-											<option value="stepwise" <?php echo selected( $bd_stepwise_settings->design, 'stepwise', false ); ?>>Stepwise</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="accordion ">
-						<div class="card p-0 mw-100 border-0 shadow-sm">
-							<div class="card-header bg-white rounded-top">
-								<h5 class="gd-settings-title h5 mb-0 "><?php echo __( 'Form Step Settings', 'gd-stepwise-form' ); ?></h5>
-							</div>
-							<div class="card-body">
-								<div class="row mb-3">
-									<div class="col-sm-3">
-										<label for="bd-gsf-steps-color" class="font-weight-bold fw-bold col-form-label  form-label"><?php echo __( 'Active Step Color', 'gd-stepwise-form' ); ?></label>
-									</div>
-									<div class="col-sm-9">
-										<input type='color' name="bd_active_step_color" id="bd-gsf-steps-color" value="<?php echo $bd_stepwise_settings->active_step_color; ?>"/>
-									</div>
-								</div>
-								<div class="row mb-3">
-									<div class="col-sm-3">
-										<label for="bd-gsf-completed-steps-color" class="font-weight-bold fw-bold col-form-label  form-label"><?php echo __( 'Completed Step Color', 'gd-stepwise-form' ); ?></label>
-									</div>
-									<div class="col-sm-9">
-										<input type='color' name="bd_completed_step_color" id="bd-gsf-completed-steps-color" value="<?php echo $bd_stepwise_settings->completed_step_color; ?>"/>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<p class="submit mt-2 text-right text-end">
-						<?php echo wp_nonce_field( 'buddy_stepwise_form_nonce_check', 'stepwise-nonce' ); ?>
-						<input type="hidden" name="page" value="stepwise-form"/>
-						<input type="submit" name="save_form" class="button-primary buddy-save-button" value="<?php echo __( 'Save changes', 'gd-stepwise-form' ); ?>"/>
-					</p>
-				</form>
-			</div>
-			<?php
 		}
 
 
@@ -233,22 +138,33 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 		}
 
 		/**
-		 * Function return settings object.
+		 * Function to return settings object.
+		 *
+		 * @return object The stepwise settings.
 		 */
 		public function get_settings() {
-			$bd_stepwise_settings_json = get_option( 'bd_stepwise_settings', false );
-			if ( empty( $bd_stepwise_settings_json ) ) {
+			// Get the settings JSON from the database.
+			$settings_json = get_option( 'bd_stepwise_settings', '{}' );
+			// Fetch individual settings for colors.
+			$active_step_color    = get_option( 'bd_active_step_color', '#ff9800' ); // Default color.
+			$completed_step_color = get_option( 'bd_completed_step_color', '#07b51b' ); // Default color.
+			// Decode the JSON into an array.
+			$settings = json_decode( $settings_json, true );
 
-				$bd_stepwise_settings      = array(
-					'design'               => 'stepwise',
-					'active_step_color'    => '#ff9800',
-					'completed_step_color' => '#07b51b',
-				);
-				$bd_stepwise_settings_json = json_encode( $bd_stepwise_settings );
-			}
-			$bd_stepwise_settings = json_decode( $bd_stepwise_settings_json );
-			return $bd_stepwise_settings;
+			// Default values in case of missing properties.
+			$default_settings = array(
+				'design'               => 'stepwise',
+				'active_step_color'    => $active_step_color,
+				'completed_step_color' => $completed_step_color,
+			);
+
+			// Merge with defaults to ensure all keys exist.
+			$settings = wp_parse_args( $settings, $default_settings );
+
+			return (object) $settings;
 		}
+
+
 
 		public function geodir_custom_field_bdsteps( $custom_fields, $post_type ) {
 

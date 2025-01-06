@@ -124,7 +124,7 @@ class Geobuddy {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'public/class-geobuddy-public.php';
-		if ( ! class_exists( 'GD_STEPWISE_FORM' ) ) {
+		if ( ! geobuddy_check_gd_stepwise_form_exists() ) {
 			/**
 			 * The class responsible for defining all actions that occur in the public-facing
 			 * side of the site.

@@ -22,10 +22,19 @@ $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
 		<a href="?page=geobuddy&tab=map" class="nav-tab <?php echo $active_tab == 'map' ? 'nav-tab-active' : ''; ?>">
 			<?php _e( 'Map', 'geobuddy' ); ?>
 		</a>
+		<?php
+		if ( ! geobuddy_check_gd_stepwise_form_exists() ) {
+			?>
+		<a href="?page=geobuddy&tab=stepwise-form" class="nav-tab <?php echo $active_tab == 'stepwise-form' ? 'nav-tab-active' : ''; ?>">
+			<?php _e( 'Stepwise Form', 'geobuddy' ); ?>
+		</a>
+			<?php
+		}
+		?>
 	</h2>
 
 	<div class="tab-content">
-		<?php if ( $active_tab == 'general' ) : ?>
+		<?php if ( 'general' === $active_tab ) { ?>
 			<div class="general-settings">
 				<form method="post" action="options.php">
 					<?php
@@ -35,11 +44,21 @@ $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
 					?>
 				</form>
 			</div>
-		<?php else : ?>
+		<?php } elseif ( 'stepwise-form' === $active_tab ) { ?>
+			<div class="general-settings">
+				<form method="post" action="options.php">
+					<?php
+					settings_fields( 'geobuddy_options' );
+					do_settings_sections( 'geobuddy_stepwise_form' );
+					submit_button();
+					?>
+				</form>
+			</div>
+		<?php } else { ?>
 			<div class="map-settings">
 				<p>Map Settings Content</p>
 			</div>
-		<?php endif; ?>
+		<?php } ?>
 	</div>
 </div>
 

@@ -72,6 +72,23 @@ register_deactivation_hook( __FILE__, 'deactivate_geobuddy' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-geobuddy.php';
 
 /**
+ * Check if the GD_STEPWISE_FORM class exists.
+ *
+ * @since 1.0.0
+ *
+ * @return bool True if the class exists, false otherwise.
+ */
+function geobuddy_check_gd_stepwise_form_exists() {
+	// Check if the GD_STEPWISE_FORM class exists.
+	if ( class_exists( 'GD_STEPWISE_FORM' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
