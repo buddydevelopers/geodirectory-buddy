@@ -332,7 +332,10 @@ class Geobuddy_Admin {
 	 */
 	public function geobuddy_stepwise_form_color_fields_callback( $args ) {
 		$field_id = $args['field_id'];
-		$value    = get_option( $field_id, '#ffffff' ); // Default to white color.
+		// Use a ternary operator to determine the default color.
+    	$default_color = ( $field_id === 'bd_active_step_color' ) ? '#ff9800' : 
+            ( $field_id === 'bd_completed_step_color' ? '#07b51b' : '#000000' );
+		$value    = get_option( $field_id, $default_color ); // Default to white color.
 		?>
 	<input
 		type="color"
