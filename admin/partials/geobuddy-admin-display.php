@@ -19,9 +19,6 @@ $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
 		<a href="?page=geobuddy&tab=general" class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>">
 			<?php _e( 'General', 'geobuddy' ); ?>
 		</a>
-		<a href="?page=geobuddy&tab=map" class="nav-tab <?php echo $active_tab == 'map' ? 'nav-tab-active' : ''; ?>">
-			<?php _e( 'Map', 'geobuddy' ); ?>
-		</a>
 		<?php
 		if ( ! geobuddy_check_gd_stepwise_form_exists() ) {
 			?>
@@ -53,10 +50,6 @@ $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
 					submit_button();
 					?>
 				</form>
-			</div>
-		<?php } else { ?>
-			<div class="map-settings">
-				<p>Map Settings Content</p>
 			</div>
 		<?php } ?>
 	</div>
