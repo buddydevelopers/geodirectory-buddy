@@ -317,10 +317,27 @@ class Geobuddy_Admin {
 	 * @param  Array $args Arguments.
 	 */
 	public function geobuddy_stepwise_form_fields_callback( $args ) {
-		$options = get_option( 'bd_stepwise_style', array() );
+
 		?>
 		<select name="bd_stepwise_style" class="custom-select form-select mw-100" id="bd_stepwise_slide_style">
-			<option value="stepwise" <?php echo selected( $options, 'stepwise', false ); ?>>Stepwise</option>
+			<?php
+				// Default options for the dropdown.
+				$default_options = array(
+					'stepwise' => __( 'Stepwise', 'geobuddy' ),
+				);
+
+				// Apply a filter to allow other plugins to modify/add options.
+				$dropdown_options = apply_filters( 'geobuddy_stepwise_style_options', $default_options );
+
+				// Current selected option.
+				$current_option = get_option( 'bd_stepwise_style', 'stepwise' );
+
+				// Generate the dropdown options.
+				foreach ( $dropdown_options as $value => $label ) {
+					$selected = selected( $current_option, $value, false );
+					echo '<option value="' . esc_attr( $value ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $label ) . '</option>';
+				}
+			?>
 		</select>
 		<?php
 	}
