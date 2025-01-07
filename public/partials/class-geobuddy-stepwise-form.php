@@ -92,8 +92,8 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 		 * @since    1.0.0
 		 */
 		public function enqueue_scripts() {
-			wp_register_style( 'bd-steps-style', GEOBUDDY_PLUGINS_URL . 'public/css/gd-stepwise-form.css' );
-			wp_register_script( 'bd-steps-script', GEOBUDDY_PLUGINS_URL . 'public/js/gd-stepwise-form.js', array( 'jquery' ) );
+			wp_register_style( 'bd-steps-style', GEOBUDDY_PLUGINS_URL . 'public/css/gd-stepwise-form.css', array(), '1.0.0' );
+			wp_register_script( 'bd-steps-script', GEOBUDDY_PLUGINS_URL . 'public/js/gd-stepwise-form.js', array( 'jquery' ), '1.0.0', true );
 			if ( function_exists( 'geodir_is_page' ) && geodir_is_page( 'add-listing' ) ) {
 				wp_enqueue_style( 'bd-steps-style' );
 				wp_enqueue_script( 'bd-steps-script' );
@@ -128,8 +128,8 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 
 				// Localize the script with new data
 				$translation_array = array(
-					'next_text'         => __( 'Next', 'gd-stepwise-form' ),
-					'prev_text'         => __( 'Prev', 'gd-stepwise-form' ),
+					'next_text'         => __( 'Next', 'geobuddy' ),
+					'prev_text'         => __( 'Prev', 'geobuddy' ),
 					'bd_stepwise_style' => $this->bd_stepwise_style,
 				);
 				$translation_array = apply_filters( 'geodirectory_stepwise_form_navigation_text', $translation_array );
@@ -172,8 +172,8 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 				'field_type'  => 'bdsteps',
 				'class'       => 'gd-bdsteps',
 				'icon'        => 'fa fa-step-forward',
-				'name'        => __( 'Steps', 'geodirectory' ),
-				'description' => __( '', 'geodirectory' ),
+				'name'        => __( 'Steps', 'geobuddy' ),
+				'description' => __( '', 'geobuddy' ),
 				'defaults'    => array(
 					'data_type'          => 'VARCHAR',
 					'admin_title'        => '',
@@ -226,11 +226,11 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 					<div class="geodir-bdsteps-container-inner">
 						<div class="geodir-bdsteps-row">
 							<h3 id="geodir_bdsteps_<?php echo (int) $cf['id']; ?>"
-							gd-bdsteps="<?php echo (int) $cf['id']; ?>"><?php echo esc_attr__( $cf['frontend_title'], 'geodirectory' ); ?>
+							gd-bdsteps="<?php echo (int) $cf['id']; ?>"><?php echo esc_attr__( $cf['frontend_title'], 'geobuddy' ); ?>
 							</h3>
 							<?php
 							if ( $cf['desc'] != '' ) {
-								echo '<small>( ' . esc_attr__( $cf['desc'], 'geodirectory' ) . ' )</small>';
+								echo '<small>( ' . esc_attr__( $cf['desc'], 'geobuddy' ) . ' )</small>';
 							}
 							?>
 						</div>
