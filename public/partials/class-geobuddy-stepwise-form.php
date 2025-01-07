@@ -173,7 +173,7 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 				'class'       => 'gd-bdsteps',
 				'icon'        => 'fa fa-step-forward',
 				'name'        => __( 'Steps', 'geobuddy' ),
-				'description' => __( '', 'geobuddy' ),
+				'description' => __( 'Description', 'geobuddy' ),
 				'defaults'    => array(
 					'data_type'          => 'VARCHAR',
 					'admin_title'        => '',
@@ -216,7 +216,7 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 
 				ob_start(); // Start  buffering;
 				if ( 2 > $cf['sort_order'] ) {
-					echo '<div class="geodir-bdsteps-main-container-parent geodir-bdsteps-' . $this->bd_stepwise_style . '"><div class="geodir-bdsteps-main-container">';
+					echo '<div class="geodir-bdsteps-main-container-parent geodir-bdsteps-' . esc_attr( $this->bd_stepwise_style ) . '"><div class="geodir-bdsteps-main-container">';
 				}
 				if ( 2 < $cf['sort_order'] ) {
 					echo '</div></div>';
@@ -226,11 +226,11 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 					<div class="geodir-bdsteps-container-inner">
 						<div class="geodir-bdsteps-row">
 							<h3 id="geodir_bdsteps_<?php echo (int) $cf['id']; ?>"
-							gd-bdsteps="<?php echo (int) $cf['id']; ?>"><?php echo esc_attr__( $cf['frontend_title'], 'geobuddy' ); ?>
+							gd-bdsteps="<?php echo (int) $cf['id']; ?>"><?php echo esc_html( $cf['frontend_title'] ); ?>
 							</h3>
 							<?php
 							if ( $cf['desc'] != '' ) {
-								echo '<small>( ' . esc_attr__( $cf['desc'], 'geobuddy' ) . ' )</small>';
+								echo '<small>( ' . esc_html( $cf['desc'] ) . ' )</small>';
 							}
 							?>
 						</div>
@@ -250,24 +250,46 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 				echo '<ul id="buddy-gsf-progressbar">';
 				foreach ( $steps_array as $key => $value ) {
 					$active = ( $key == 0 ) ? 'class="active"' : '';
-					echo '<li ' . $active . ' data-filter="bdstep-filter-' . $value->id . '"><span><i class="' . $value->field_icon . '"></i></span><strong>' . $value->frontend_title . '</strong></li>';
+					echo '<li ' . esc_attr( $active ) . ' data-filter="bdstep-filter-' . esc_attr( $value->id ) . '"><span><i class="' . esc_attr( $value->field_icon ) . '"></i></span><strong>' . esc_html( $value->frontend_title ) . '</strong></li>';
 				}
 				echo '</ul>';
 				// echo '<div class="progress"> <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div> </div>';
 			}
 		}
 
+		/**
+		 * Retrieve all steps for the given post type.
+		 *
+		 * This function fetches the custom fields of type 'bdsteps' for a specific post type
+		 * from the custom fields table, ordered by their 'sort_order'.
+		 *
+		 * @param string $post_type The post type to fetch the steps for.
+		 * 
+		 * @return array|object The results of the query as an array of objects.
+		 */
 		private function gsf_get_all_steps( $post_type ) {
 			global $wpdb;
+
 			$table = GEODIR_CUSTOM_FIELDS_TABLE;
-			$query = $wpdb->prepare( 'select id, frontend_title, field_icon from ' . GEODIR_CUSTOM_FIELDS_TABLE . ' where field_type = %s AND post_type = %s order by sort_order', 'bdsteps', $post_type );
+			$post_type = sanitize_text_field( $post_type );
+			$query = $wpdb->prepare(
+				"SELECT id, frontend_title, field_icon 
+				FROM {$table} 
+				WHERE field_type = %s 
+				AND post_type = %s 
+				ORDER BY sort_order",
+				'bdsteps',
+				$post_type
+			);
+
+
 			return $wpdb->get_results( $query );
 		}
 
 		/**
 		 * Stepwise form issue with Elementor.
 		 */
-		function geodir_add_listing_form_end_custom_callback( $listing_type, $post, $package ) {
+		public function geodir_add_listing_form_end_custom_callback( $listing_type, $post, $package ) {
 			echo '</div></div></div></div>';
 		}
 

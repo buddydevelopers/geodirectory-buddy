@@ -273,7 +273,7 @@ class Geobuddy_Admin {
 		$sanitized_settings['completed_step_color'] = sanitize_hex_color( $sanitized_settings['completed_step_color'] );
 
 		// Return as a JSON-encoded string.
-		return json_encode( $sanitized_settings );
+		return wp_json_encode( $sanitized_settings );
 	}
 
 
@@ -281,14 +281,14 @@ class Geobuddy_Admin {
 	 * Section callback
 	 */
 	public function custom_fields_section_callback() {
-		echo '<p>' . __( 'Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy' ) . '</p>';
+		echo '<p>' . esc_html_e( 'Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy' ) . '</p>';
 	}
 
 	/**
 	 * Section callback
 	 */
 	public function stepwise_form_fields_section_callback() {
-		echo '<p>' . __( 'Geodirectory Stepwise Forms Fields', 'geobuddy' ) . '</p>';
+		echo '<p>' . esc_html_e( 'Geodirectory Stepwise Forms Fields', 'geobuddy' ) . '</p>';
 	}
 
 	/**
@@ -306,7 +306,7 @@ class Geobuddy_Admin {
 					name="geobuddy_custom_fields[<?php echo esc_attr( $field_id ); ?>]" 
 					value="1" 
 					<?php checked( 1, $checked ); ?>>
-			<?php _e( 'Enable this field', 'geobuddy' ); ?>
+			<?php esc_html_e( 'Enable this field', 'geobuddy' ); ?>
 		</label>
 		<?php
 	}

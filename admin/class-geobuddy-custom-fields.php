@@ -253,7 +253,7 @@ class Geobuddy_Custom_Fields {
 			}
 
 			$raw_value = stripslashes( $gd_post->{$cf['htmlvar_name']} );
-			$value     = '<a href="https://api.whatsapp.com/send?phone=' . preg_replace( '/[^0-9+]/', '', $gd_post->{$cf['htmlvar_name']} ) . '&text=Hey%2C%20How%20you%20doing%3F">' . __( $cf['frontend_title'], 'geodirectory' ) . '</a>';
+			$value     = '<a href="https://api.whatsapp.com/send?phone=' . preg_replace( '/[^0-9+]/', '', $gd_post->{$cf['htmlvar_name']} ) . '&text=Hey%2C%20How%20you%20doing%3F">' . $cf['frontend_title'] . '</a>';
 
 			if ( ! empty( $output ) && isset( $output['raw'] ) ) {
 				// Database value.
@@ -310,7 +310,7 @@ class Geobuddy_Custom_Fields {
 			}
 
 			$raw_value = stripslashes( $gd_post->{$cf['htmlvar_name']} );
-			$value     = '<a href="skype:' . $gd_post->{$cf['htmlvar_name']} . '?chat">' . __( $cf['frontend_title'], 'geodirectory' ) . '</a>';
+			$value     = '<a href="skype:' . $gd_post->{$cf['htmlvar_name']} . '?chat">' . $cf['frontend_title'] . '</a>';
 
 			if ( ! empty( $output ) && isset( $output['raw'] ) ) {
 				// Database value.
