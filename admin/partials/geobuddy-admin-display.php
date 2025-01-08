@@ -8,6 +8,7 @@
  * @package    Geobuddy
  * @subpackage Geobuddy/admin/partials
  */
+
 $active_tab = filter_input( INPUT_GET, 'tab' ) ? filter_input( INPUT_GET, 'tab' ) : 'general';
 ?>
 
@@ -15,13 +16,13 @@ $active_tab = filter_input( INPUT_GET, 'tab' ) ? filter_input( INPUT_GET, 'tab' 
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
 	<h2 class="nav-tab-wrapper">
-		<a href="?page=geobuddy&tab=general" class="nav-tab <?php echo $active_tab === 'general' ? 'nav-tab-active' : ''; ?>">
+		<a href="?page=geobuddy&tab=general" class="nav-tab <?php echo 'general' === $active_tab ? 'nav-tab-active' : ''; ?>">
 			<?php esc_html_e( 'General', 'geobuddy' ); ?>
 		</a>
 		<?php
 		if ( ! geobuddy_check_gd_stepwise_form_exists() ) {
 			?>
-		<a href="?page=geobuddy&tab=stepwise-form" class="nav-tab <?php echo $active_tab === 'stepwise-form' ? 'nav-tab-active' : ''; ?>">
+		<a href="?page=geobuddy&tab=stepwise-form" class="nav-tab <?php echo 'stepwise-form' === $active_tab ? 'nav-tab-active' : ''; ?>">
 			<?php esc_html_e( 'Stepwise Form', 'geobuddy' ); ?>
 		</a>
 			<?php

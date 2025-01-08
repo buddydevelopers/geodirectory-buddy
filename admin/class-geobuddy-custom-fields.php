@@ -8,7 +8,6 @@
  * @package    Geobuddy
  * @subpackage Geobuddy/admin
  */
-
 class Geobuddy_Custom_Fields {
 
 	/**
@@ -245,7 +244,7 @@ class Geobuddy_Custom_Fields {
 			$output       = geodir_field_output_process( $output );
 			if ( strpos( $field_icon, 'http' ) !== false ) {
 				$field_icon_af = '';
-			} elseif ( $field_icon == '' ) {
+			} elseif ( '' === $field_icon ) {
 				$field_icon_af = $design_style ? '<i class="fab fa-whatsapp fa-fw" aria-hidden="true"></i> ' : '<i class="fab fa-whatsapp" aria-hidden="true"></i>';
 			} else {
 				$field_icon_af = $field_icon;
@@ -267,13 +266,13 @@ class Geobuddy_Custom_Fields {
 
 			$maybe_secondary_class = isset( $output['icon'] ) ? 'gv-secondary' : '';
 
-			if ( $output == '' || isset( $output['icon'] ) ) {
+			if ( '' === $output || isset( $output['icon'] ) ) {
 				$html .= '<span class="geodir_post_meta_icon geodir-i-phone" style="' . $field_icon . '">' . $field_icon_af;
 			}
-			if ( $output == '' || isset( $output['value'] ) ) {
+			if ( '' === $output || isset( $output['value'] ) ) {
 				$html .= $value;
 			}
-			if ( $output == '' || isset( $output['icon'] ) ) {
+			if ( '' === $output || isset( $output['icon'] ) ) {
 				$html .= '</span>';
 			}
 
@@ -295,14 +294,14 @@ class Geobuddy_Custom_Fields {
 	public function custom_output_skype( $html, $location, $cf, $output ) {
 		global $gd_post;
 
-		if ( isset( $gd_post->{$cf['htmlvar_name']} ) && $gd_post->{$cf['htmlvar_name']} != '' ) :
+		if ( isset( $gd_post->{$cf['htmlvar_name']} ) && '' !== $gd_post->{$cf['htmlvar_name']} ) :
 
-			$class = ( $cf['htmlvar_name'] == 'geodir_timing' ) ? 'geodir-i-time' : 'geodir-i-text';
+			$class = ( 'geodir_timing' === $cf['htmlvar_name'] ) ? 'geodir-i-time' : 'geodir-i-text';
 
 			$field_icon = geodir_field_icon_proccess( $cf );
 			if ( strpos( $field_icon, 'http' ) !== false ) {
 				$field_icon_af = '';
-			} elseif ( $field_icon == '' ) {
+			} elseif ( '' === $field_icon ) {
 				$field_icon_af = $design_style ? '<i class="fab fa-skype" aria-hidden="true"></i> ' : '<i class="fab fa-skype" aria-hidden="true"></i>';
 			} else {
 				$field_icon_af = $field_icon;
@@ -324,13 +323,13 @@ class Geobuddy_Custom_Fields {
 
 			$maybe_secondary_class = isset( $output['icon'] ) ? 'gv-secondary' : '';
 
-			if ( $output == '' || isset( $output['icon'] ) ) {
+			if ( '' === $output || isset( $output['icon'] ) ) {
 				$html .= '<span class="geodir_post_meta_icon geodir-i-phone" style="' . $field_icon . '">' . $field_icon_af;
 			}
-			if ( $output == '' || isset( $output['value'] ) ) {
+			if ( '' === $output || isset( $output['value'] ) ) {
 				$html .= $value;
 			}
-			if ( $output == '' || isset( $output['icon'] ) ) {
+			if ( '' === $output || isset( $output['icon'] ) ) {
 				$html .= '</span>';
 			}
 

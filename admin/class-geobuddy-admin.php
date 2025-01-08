@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -312,11 +311,9 @@ class Geobuddy_Admin {
 	}
 
 	/**
-	 *  Field callback.
-	 *
-	 * @param  Array $args Arguments.
+	 * Field callback.
 	 */
-	public function geobuddy_stepwise_form_fields_callback( $args ) {
+	public function geobuddy_stepwise_form_fields_callback() {
 
 		?>
 		<select name="bd_stepwise_style" class="custom-select form-select mw-100" id="bd_stepwise_slide_style">
@@ -337,7 +334,7 @@ class Geobuddy_Admin {
 					$selected = selected( $current_option, $value, false );
 					echo '<option value="' . esc_attr( $value ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $label ) . '</option>';
 				}
-			?>
+				?>
 		</select>
 		<?php
 	}
@@ -350,9 +347,9 @@ class Geobuddy_Admin {
 	public function geobuddy_stepwise_form_color_fields_callback( $args ) {
 		$field_id = $args['field_id'];
 		// Use a ternary operator to determine the default color.
-    	$default_color = ( $field_id === 'bd_active_step_color' ) ? '#ff9800' : 
-            ( $field_id === 'bd_completed_step_color' ? '#07b51b' : '#000000' );
-		$value    = get_option( $field_id, $default_color ); // Default to white color.
+		$default_color = ( 'bd_active_step_color' === $field_id ) ? '#ff9800' :
+			( 'bd_completed_step_color' === $field_id ? '#07b51b' : '#000000' );
+		$value         = get_option( $field_id, $default_color ); // Default to white color.
 		?>
 	<input
 		type="color"

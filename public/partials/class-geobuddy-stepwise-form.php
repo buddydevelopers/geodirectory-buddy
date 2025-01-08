@@ -126,7 +126,7 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 
 				$this->bd_stepwise_style = ! empty( $bd_stepwise_settings->design ) ? $bd_stepwise_settings->design : 'stepwise';
 
-				// Localize the script with new data
+				// Localize the script with new data.
 				$translation_array = array(
 					'next_text'         => __( 'Next', 'geobuddy' ),
 					'prev_text'         => __( 'Prev', 'geobuddy' ),
@@ -243,7 +243,7 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 		/**
 		 * Function to add progressbar.
 		 */
-		function geodir_before_add_listing_form_callback( $listing_type, $post, $package ) {
+		public function geodir_before_add_listing_form_callback( $listing_type, $post, $package ) {
 			$steps_array = $this->gsf_get_all_steps( $listing_type );
 
 			if ( ! empty( $steps_array ) ) {
@@ -264,15 +264,15 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 		 * from the custom fields table, ordered by their 'sort_order'.
 		 *
 		 * @param string $post_type The post type to fetch the steps for.
-		 * 
+		 *
 		 * @return array|object The results of the query as an array of objects.
 		 */
 		private function gsf_get_all_steps( $post_type ) {
 			global $wpdb;
 
-			$table = GEODIR_CUSTOM_FIELDS_TABLE;
+			$table     = GEODIR_CUSTOM_FIELDS_TABLE;
 			$post_type = sanitize_text_field( $post_type );
-			$query = $wpdb->prepare(
+			$query     = $wpdb->prepare(
 				"SELECT id, frontend_title, field_icon 
 				FROM {$table} 
 				WHERE field_type = %s 
@@ -281,7 +281,6 @@ if ( ! class_exists( 'GEOBUDDY_STEPWISE_FORM' ) ) {
 				'bdsteps',
 				$post_type
 			);
-
 
 			return $wpdb->get_results( $query );
 		}
