@@ -42,14 +42,22 @@ $active_tab = filter_input( INPUT_GET, 'tab' ) ? filter_input( INPUT_GET, 'tab' 
 				</form>
 			</div>
 		<?php } elseif ( 'stepwise-form' === $active_tab ) { ?>
-			<div class="general-settings">
-				<form method="post" action="options.php">
-					<?php
-					settings_fields( 'geobuddy_options' );
-					do_settings_sections( 'geobuddy_stepwise_form' );
-					submit_button();
-					?>
-				</form>
+			<div class="wrap gd-stepwiseform-wrapper">
+				<div class="general-settings">
+					<form method="post" action="options.php">
+						<?php
+						settings_fields( 'geobuddy_options' );
+						?>
+					<div class="gd-stepwise-form-container">
+						<?php
+						do_settings_sections( 'geobuddy_stepwise_form' );
+						?>
+					</div>
+						<?php
+						submit_button();
+						?>
+					</form>
+				</div>
 			</div>
 		<?php } ?>
 	</div>
