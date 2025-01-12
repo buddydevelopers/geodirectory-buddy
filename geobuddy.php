@@ -103,3 +103,38 @@ function run_geobuddy() {
 	$plugin->run();
 }
 run_geobuddy();
+
+// Freemius integration code.
+if ( ! function_exists( 'geobuddy_fs' ) ) {
+    // Create a helper function for easy SDK access.
+    function geobuddy_fs() {
+        global $geobuddy_fs;
+
+        if ( ! isset( $geobuddy_fs ) ) {
+            // Include Freemius SDK.
+            require_once dirname(__FILE__) . '/freemius/start.php';
+
+            $geobuddy_fs = fs_dynamic_init( array(
+                'id'                  => '17588',
+                'slug'                => 'geobuddy',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_ef77760e0a4dc010bf37a5f8a507e',
+                'is_premium'          => false,
+                'has_addons'          => false,
+                'has_paid_plans'      => false,
+                'menu'                => array(
+                    'slug'           => 'geobuddy',
+                    'account'        => false,
+                    'support'        => false,
+                ),
+            ) );
+        }
+
+        return $geobuddy_fs;
+    }
+
+    // Init Freemius.
+    geobuddy_fs();
+    // Signal that SDK was initiated.
+    do_action( 'geobuddy_fs_loaded' );
+}
