@@ -120,11 +120,11 @@ if ( ! function_exists( 'geobuddy_fs' ) ) {
                 'type'                => 'plugin',
                 'public_key'          => 'pk_ef77760e0a4dc010bf37a5f8a507e',
                 'is_premium'          => false,
-                'has_addons'          => false,
+                'has_addons'          => true,
                 'has_paid_plans'      => false,
+                'is_org_compliant'    => false,
                 'menu'                => array(
                     'slug'           => 'geobuddy',
-                    'account'        => false,
                     'support'        => false,
                 ),
             ) );
