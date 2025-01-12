@@ -13,11 +13,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       GeoBuddy
- * Plugin URI:        https://https://buddydevelopers.com
+ * Plugin URI:        https://buddydevelopers.com
  * Description:       GeoBuddy is the ultimate companion for the GeoDirectory plugin, designed to extend its core functionality and unlock new possibilities for directory-based WordPress websites.
  * Version:           1.0.0
  * Author:            BuddyDevelopers
- * Author URI:        https://https://buddydevelopers.com/
+ * Author URI:        https://buddydevelopers.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       geobuddy
