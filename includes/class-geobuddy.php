@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -78,7 +77,6 @@ class Geobuddy {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -103,30 +101,37 @@ class Geobuddy {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-geobuddy-loader.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-geobuddy-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-geobuddy-i18n.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-geobuddy-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-geobuddy-admin.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-geobuddy-admin.php';
 
-		// Initialize custom fields
-		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-geobuddy-custom-fields.php';
-		
+		/**
+		 * Initialize custom fields.
+		 */
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-geobuddy-custom-fields.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-geobuddy-public.php';
-
-		$this->loader = new Geobuddy_Loader();	
-
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-geobuddy-public.php';
+		if ( ! geobuddy_check_gd_stepwise_form_exists() ) {
+			/**
+			 * The class responsible for defining all actions that occur in the public-facing
+			 * side of the site.
+			 */
+			require_once plugin_dir_path( __DIR__ ) . 'public/partials/class-geobuddy-stepwise-form.php';
+		}
+		$this->loader = new Geobuddy_Loader();
 	}
 
 	/**
@@ -143,7 +148,6 @@ class Geobuddy {
 		$plugin_i18n = new Geobuddy_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -156,7 +160,7 @@ class Geobuddy {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Geobuddy_Admin( $this->get_plugin_name(), $this->get_version() );
-		$plugin_cf = new Geobuddy_Custom_Fields();
+		$plugin_cf    = new Geobuddy_Custom_Fields();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -176,7 +180,6 @@ class Geobuddy {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
 	}
 
 	/**
@@ -218,5 +221,4 @@ class Geobuddy {
 	public function get_version() {
 		return $this->version;
 	}
-
 }

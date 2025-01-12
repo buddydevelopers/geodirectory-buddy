@@ -1,0 +1,255 @@
+.geodir-bdsteps-stepwise .geodir-bdsteps-container {
+    display: none;
+    overflow: hidden;
+    margin-top: 40px
+}
+
+.geodir-next-step {
+    float: right
+}
+
+.geodir-prev-step {
+    float: left
+}
+
+.geodir-next-step,
+.geodir-prev-step {
+    background: #383838;
+    color: #fff;
+    padding: 6px 25px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-family: Poppins, Helvetica, Arial, Lucida, sans-serif !important;
+    margin-bottom: 30px
+}
+
+.geodir-bdsteps-container {
+    border-radius: 5px;
+    padding: 0;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    -o-transition: all .3s
+}
+
+.geodir-bdsteps-row {
+    margin-bottom: 30px !important;
+    border-bottom: 1px #e0e0e0 solid;
+    padding-bottom: 20px;
+    margin-bottom: 30px
+}
+
+.geodir-bdsteps-row small {
+    font-size: 13px !important
+}
+
+.geodir-bdsteps-row h3 {
+    margin: auto !important
+}
+
+.geodir-form-step {
+    opacity: 1;
+    transition: all .3s !important;
+    -webkit-transition: all .3s !important;
+    -moz-transition: all .3s !important;
+    -ms-transition: all .3s !important;
+    -o-transition: all .3s !important
+}
+
+.geodir-bdsteps-container:hover .geodir-form-step {
+    opacity: 1
+}
+
+.geodir-bdsteps-slide {
+    position: relative
+}
+
+.geodir-bdsteps-fade .flex-direction-nav,
+.geodir-bdsteps-slide .flex-direction-nav {
+    position: relative;
+    border: 0;
+    z-index: 10;
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%
+}
+
+.geodir-bdsteps-fade .flex-direction-nav a,
+.geodir-bdsteps-slide .flex-direction-nav a {
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #195f9d;
+    border: 1px solid #175892;
+    padding: .45rem 1.2rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+.geodir-bdsteps-fade .geodir-bdsteps-container,
+.geodir-bdsteps-slide .geodir-bdsteps-container {
+    padding: 0;
+    box-shadow: none;
+    overflow: hidden
+}
+
+.geodir-bdsteps-container-inner {
+    border: 1px #ced4db solid;
+    padding: 35px;
+    border-radius: 10px;
+    background: #fdfdfd;
+    margin-bottom: 20px
+}
+
+.geodir-form-step {
+    text-decoration: none !important
+}
+
+.geodir-bdsteps-main-container .geodir-bdsteps-container:not(:first-of-type) {
+    display: none
+}
+
+#buddy-gsf-progressbar {
+    overflow: hidden;
+    color: #d3d3d3;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex: auto;
+    width: auto;
+    justify-content: space-evenly;
+    margin-bottom: 30px;
+    margin-top: 30px
+}
+
+#buddy-gsf-progressbar .bd-completed {
+    color: #07b51b
+}
+
+#buddy-gsf-progressbar .active {
+    color: #ff9800
+}
+
+#buddy-gsf-progressbar li {
+    list-style-type: none;
+    font-size: 15px;
+    width: 100%;
+    position: relative;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer
+}
+
+#buddy-gsf-progressbar #account:before {
+    font-family: FontAwesome;
+    content: "\f13e"
+}
+
+#buddy-gsf-progressbar #personal:before {
+    font-family: FontAwesome;
+    content: "\f007"
+}
+
+#buddy-gsf-progressbar #payment:before {
+    font-family: FontAwesome;
+    content: "\f030"
+}
+
+#buddy-gsf-progressbar #confirm:before {
+    font-family: FontAwesome;
+    content: "\f00c"
+}
+
+#buddy-gsf-progressbar li:before {
+    width: 50px;
+    height: 50px;
+    line-height: 45px;
+    display: block;
+    font-size: 20px;
+    color: #fff;
+    background: #d3d3d3;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    padding: 2px
+}
+
+#buddy-gsf-progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 3px;
+    background: #d3d3d3;
+    position: absolute;
+    left: 0;
+    top: 24px;
+    z-index: 1
+}
+
+#buddy-gsf-progressbar li.bd-completed:after,
+#buddy-gsf-progressbar li.bd-completed:before {
+    background: #07b51b
+}
+
+#buddy-gsf-progressbar li.active:after,
+#buddy-gsf-progressbar li.active:before {
+    background: #ff9800
+}
+
+#buddy-gsf-progressbar li span {
+    width: 48px;
+    height: 48px;
+    background: #ccc;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: auto;
+    font-size: 20px;
+    z-index: 2;
+    position: relative
+}
+
+#buddy-gsf-progressbar li span i {
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    color: #313131
+}
+
+#buddy-gsf-progressbar li.bd-completed span {
+    background: #07b51b;
+    color: #fff
+}
+
+#buddy-gsf-progressbar li.active span {
+    background: #ff9800;
+    color: #fff
+}
+
+#buddy-gsf-progressbar li.bd-completed span i {
+    color: #fff
+}
+
+#buddy-gsf-progressbar li.active span i {
+    color: #fff
+}
+
+.gsf-full-form.geodir-bdsteps-main-container .geodir-form-step {
+    display: none
+}
+
+@media only screen and (max-width:600px) {
+    #buddy-gsf-progressbar li strong {
+        display: none
+    }
+}

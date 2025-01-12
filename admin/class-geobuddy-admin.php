@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -44,18 +43,17 @@ class Geobuddy_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of this plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		
-		// Add hook for admin menu
-		add_action('admin_menu', array($this, 'add_plugin_admin_menu'));
-		add_action('admin_init', array($this, 'register_settings'));
+		$this->version     = $version;
 
+		// Add hook for admin menu.
+		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
 	}
 
 	/**
@@ -78,7 +76,6 @@ class Geobuddy_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/geobuddy-admin.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -101,7 +98,6 @@ class Geobuddy_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/geobuddy-admin.js', array( 'jquery' ), $this->version, false );
-
 	}
 
 	/**
@@ -110,25 +106,25 @@ class Geobuddy_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_plugin_admin_menu() {
-		// Add main menu item
+		// Add main menu item.
 		add_menu_page(
-			__('GeoBuddy Settings', 'geobuddy'), // Page title
-			__('GeoBuddy', 'geobuddy'),         // Menu title
-			'manage_options',                    // Capability required
-			'geobuddy',                         // Menu slug
-			array($this, 'display_plugin_admin_page'), // Callback function
-			'dashicons-admin-site',             // Icon
-			25                                  // Position in menu
+			__( 'GeoBuddy Settings', 'geobuddy' ), // Page title.
+			__( 'GeoBuddy', 'geobuddy' ),         // Menu title.
+			'manage_options',                    // Capability required.
+			'geobuddy',                         // Menu slug.
+			array( $this, 'display_plugin_admin_page' ), // Callback function.
+			'dashicons-admin-site',             // Icon.
+			25                                  // Position in menu.
 		);
 
-		// Add only one submenu item that matches the parent
+		// Add only one submenu item that matches the parent.
 		add_submenu_page(
-			'geobuddy',                         // Parent slug
-			__('Settings', 'geobuddy'),         // Page title
-			__('Settings', 'geobuddy'),         // Menu title
-			'manage_options',                    // Capability required
-			'geobuddy',                         // Menu slug (same as parent)
-			array($this, 'display_plugin_admin_page') // Callback function
+			'geobuddy',                         // Parent slug.
+			__( 'Settings', 'geobuddy' ),         // Page title.
+			__( 'Settings', 'geobuddy' ),         // Menu title.
+			'manage_options',                    // Capability required.
+			'geobuddy',                         // Menu slug (same as parent).
+			array( $this, 'display_plugin_admin_page' ) // Callback function.
 		);
 	}
 
@@ -145,80 +141,251 @@ class Geobuddy_Admin {
 	 * Register settings
 	 */
 	public function register_settings() {
-		// Register a setting group
+
+		// Register a setting group.
 		register_setting(
 			'geobuddy_options',
 			'geobuddy_custom_fields',
-			array('sanitize_callback' => array($this, 'sanitize_custom_fields'))
+			array( 'sanitize_callback' => array( $this, 'sanitize_custom_fields' ) )
 		);
 
-		// Add settings section
+		// Add settings section.
 		add_settings_section(
 			'geobuddy_custom_fields_section',
-			__('Custom Fields Settings', 'geobuddy'),
-			array($this, 'custom_fields_section_callback'),
+			__( 'Custom Fields Settings', 'geobuddy' ),
+			array( $this, 'custom_fields_section_callback' ),
 			'geobuddy'
 		);
 
-		// Add settings fields
+		// Add settings fields.
 		$custom_fields = array(
-			'linkedin' => __('LinkedIn Profile', 'geobuddy'),
-			'whatsapp' => __('WhatsApp', 'geobuddy'),
-			'tiktok' => __('TikTok Profile', 'geobuddy'),
-			'youtube' => __('YouTube Channel', 'geobuddy'),
-			'skype' => __('Skype', 'geobuddy'),
-			'virtual_tour' => __('360° Virtual Tour URL', 'geobuddy')
+			'linkedin'     => __( 'LinkedIn Profile', 'geobuddy' ),
+			'whatsapp'     => __( 'WhatsApp', 'geobuddy' ),
+			'tiktok'       => __( 'TikTok Profile', 'geobuddy' ),
+			'youtube'      => __( 'YouTube Channel', 'geobuddy' ),
+			'skype'        => __( 'Skype', 'geobuddy' ),
+			'virtual_tour' => __( '360° Virtual Tour URL', 'geobuddy' ),
 		);
 
-		foreach ($custom_fields as $field_id => $field_label) {
+		foreach ( $custom_fields as $field_id => $field_label ) {
 			add_settings_field(
 				'geobuddy_field_' . $field_id,
 				$field_label,
-				array($this, 'custom_field_callback'),
+				array( $this, 'custom_field_callback' ),
 				'geobuddy',
 				'geobuddy_custom_fields_section',
-				array('field_id' => $field_id)
+				array( 'field_id' => $field_id )
 			);
 		}
+
+		if ( ! geobuddy_check_gd_stepwise_form_exists() ) {
+			// Register a single setting for all options.
+			register_setting(
+				'geobuddy_options',
+				'bd_stepwise_settings',
+				array(
+					'sanitize_callback' => array( $this, 'sanitize_stepwise_settings' ),
+				)
+			);
+
+			// Register a Stepwise form setting group.
+			register_setting(
+				'geobuddy_options',
+				'bd_stepwise_style',
+				array( 'sanitize_callback' => array( $this, 'sanitize_geobuddy_stepwise_form' ) )
+			);
+
+			// Add settings section.
+			add_settings_section(
+				'geobuddy_stepwise_form_fields_section',
+				__( 'Geodirectory Stepwise Forms Setting', 'geobuddy' ),
+				array( $this, 'stepwise_form_fields_section_callback' ),
+				'geobuddy_stepwise_form'
+			);
+
+			add_settings_field(
+				'geobuddy_field_',
+				'Form Style',
+				array( $this, 'geobuddy_stepwise_form_fields_callback' ),
+				'geobuddy_stepwise_form',
+				'geobuddy_stepwise_form_fields_section',
+				array( 'field_id' => 'bd_stepwise_slide_style' )
+			);
+
+			$gd_color_array = array( 'active', 'completed' );
+
+			foreach ( $gd_color_array as $gd_color ) {
+				// Define an array of color settings.
+				$gd_color_array = array(
+					'active'    => __( 'Active Step Color', 'geobuddy' ),
+					'completed' => __( 'Completed Step Color', 'geobuddy' ),
+				);
+
+				foreach ( $gd_color_array as $key => $label ) {
+					// Register each color setting.
+					register_setting(
+						'geobuddy_options',
+						"bd_{$key}_step_color",
+						array(
+							'sanitize_callback' => 'sanitize_hex_color',
+						)
+					);
+
+					// Add a settings field for each color.
+					add_settings_field(
+						"geobuddy_field_{$key}_step_color",
+						$label,
+						array( $this, 'geobuddy_stepwise_form_color_fields_callback' ),
+						'geobuddy_stepwise_form',
+						'geobuddy_stepwise_form_fields_section',
+						array(
+							'field_id'  => "bd_{$key}_step_color",
+							'label_for' => "bd-gsf-{$key}-steps-color",
+						)
+					);
+				}
+			}
+		}
 	}
+
+	/**
+	 * Sanitize stepwise settings.
+	 *
+	 * @param array $input The unsanitized input.
+	 * @return string The sanitized JSON string.
+	 */
+	public function sanitize_stepwise_settings( $input ) {
+		// Fetch individual settings for colors.
+		$active_step_color    = get_option( 'bd_active_step_color', '#ff9800' ); // Default color.
+		$completed_step_color = get_option( 'bd_completed_step_color', '#07b51b' ); // Default color.
+		$default_settings     = array(
+			'design'               => 'stepwise',
+			'active_step_color'    => $active_step_color,
+			'completed_step_color' => $completed_step_color,
+		);
+
+		// Merge defaults with incoming settings.
+		$sanitized_settings = wp_parse_args( $input, $default_settings );
+
+		// Validate hex colors.
+		$sanitized_settings['active_step_color']    = sanitize_hex_color( $sanitized_settings['active_step_color'] );
+		$sanitized_settings['completed_step_color'] = sanitize_hex_color( $sanitized_settings['completed_step_color'] );
+
+		// Return as a JSON-encoded string.
+		return wp_json_encode( $sanitized_settings );
+	}
+
 
 	/**
 	 * Section callback
 	 */
 	public function custom_fields_section_callback() {
-		echo '<p>' . __('Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy') . '</p>';
+		echo '<p>' . esc_html_e( 'Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy' ) . '</p>';
 	}
 
 	/**
-	 * Field callback
+	 * Section callback
 	 */
-	public function custom_field_callback($args) {
-		$options = get_option('geobuddy_custom_fields', array());
+	public function stepwise_form_fields_section_callback() {
+		echo '<p>' . esc_html_e( 'Geodirectory Stepwise Forms Fields', 'geobuddy' ) . '</p>';
+	}
+
+	/**
+	 *  Field callback.
+	 *
+	 * @param  Array $args Arguments.
+	 */
+	public function custom_field_callback( $args ) {
+		$options  = get_option( 'geobuddy_custom_fields', array() );
 		$field_id = $args['field_id'];
-		$checked = isset($options[$field_id]) ? $options[$field_id] : 1; // Default to enabled
+		$checked  = isset( $options[ $field_id ] ) ? $options[ $field_id ] : 1; // Default to enabled.
 		?>
 		<label>
 			<input type="checkbox" 
-				   name="geobuddy_custom_fields[<?php echo esc_attr($field_id); ?>]" 
-				   value="1" 
-				   <?php checked(1, $checked); ?>>
-			<?php _e('Enable this field', 'geobuddy'); ?>
+					name="geobuddy_custom_fields[<?php echo esc_attr( $field_id ); ?>]" 
+					value="1" 
+					<?php checked( 1, $checked ); ?>>
+			<?php esc_html_e( 'Enable this field', 'geobuddy' ); ?>
 		</label>
 		<?php
 	}
 
 	/**
-	 * Sanitize custom fields
+	 * Field callback.
 	 */
-	public function sanitize_custom_fields($input) {
-		$new_input = array();
-		$custom_fields = array('linkedin', 'whatsapp', 'tiktok', 'youtube', 'skype', 'virtual_tour');
-		
-		foreach ($custom_fields as $field) {
-			$new_input[$field] = isset($input[$field]) ? 1 : 0;
+	public function geobuddy_stepwise_form_fields_callback() {
+
+		?>
+		<select name="bd_stepwise_style" class="custom-select form-select mw-100" id="bd_stepwise_slide_style">
+			<?php
+				// Default options for the dropdown.
+				$default_options = array(
+					'stepwise' => __( 'Stepwise', 'geobuddy' ),
+				);
+
+				// Apply a filter to allow other plugins to modify/add options.
+				$dropdown_options = apply_filters( 'geobuddy_stepwise_style_options', $default_options );
+
+				// Current selected option.
+				$current_option = get_option( 'bd_stepwise_style', 'stepwise' );
+
+				// Generate the dropdown options.
+				foreach ( $dropdown_options as $value => $label ) {
+					$selected = selected( $current_option, $value, false );
+					echo '<option value="' . esc_attr( $value ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $label ) . '</option>';
+				}
+				?>
+		</select>
+		<?php
+	}
+
+	/**
+	 * Callback function to render color input fields.
+	 *
+	 * @param array $args Arguments passed to the callback.
+	 */
+	public function geobuddy_stepwise_form_color_fields_callback( $args ) {
+		$field_id = $args['field_id'];
+		// Use a ternary operator to determine the default color.
+		$default_color = ( 'bd_active_step_color' === $field_id ) ? '#ff9800' :
+			( 'bd_completed_step_color' === $field_id ? '#07b51b' : '#000000' );
+		$value         = get_option( $field_id, $default_color ); // Default to white color.
+		?>
+	<input
+		type="color"
+		name="<?php echo esc_attr( $field_id ); ?>"
+		id="<?php echo esc_attr( $args['label_for'] ); ?>"
+		value="<?php echo esc_attr( $value ); ?>"
+	>
+		<?php
+	}
+
+	/**
+	 * Sanitize custom fields
+	 *
+	 * @param  Array $input Input.
+	 */
+	public function sanitize_custom_fields( $input ) {
+		$new_input     = array();
+		$custom_fields = array( 'linkedin', 'whatsapp', 'tiktok', 'youtube', 'skype', 'virtual_tour' );
+
+		foreach ( $custom_fields as $field ) {
+			$new_input[ $field ] = isset( $input[ $field ] ) ? 1 : 0;
 		}
-		
+
 		return $new_input;
 	}
 
+	/**
+	 * Sanitize the bd_stepwise_style field.
+	 *
+	 * @param  array $input The input data from the form.
+	 * @return string Sanitized value.
+	 */
+	public function sanitize_geobuddy_stepwise_form( $input ) {
+		// Ensure the input is sanitized.
+		$sanitized_input = sanitize_text_field( $input );
+
+		return $sanitized_input;
+	}
 }
