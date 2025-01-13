@@ -165,6 +165,9 @@ class Geobuddy {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_admin_menu' );
+		$this->loader->add_action( 'update_option_bd_stepwise_style', $plugin_admin, 'gb_stepwise_form_style_setting_updation' );
+		$this->loader->add_action( 'update_option_bd_active_step_color', $plugin_admin, 'gb_stepwise_form_active_step_color_setting_updation' );
+		$this->loader->add_action( 'update_option_bd_completed_step_color', $plugin_admin, 'gb_stepwise_form_completed_step_color_setting_updation' );
 	}
 
 	/**

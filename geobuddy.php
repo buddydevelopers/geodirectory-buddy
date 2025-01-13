@@ -80,7 +80,8 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-geobuddy.php';
  */
 function geobuddy_check_gd_stepwise_form_exists() {
 	// Check if the GD_STEPWISE_FORM class exists.
-	if ( class_exists( 'GD_STEPWISE_FORM' ) ) {
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	if ( is_plugin_active( 'geobuddy-multistep-form/geobuddy-multistep-form.php' )) {
 		return true;
 	}
 

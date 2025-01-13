@@ -178,74 +178,74 @@ class Geobuddy_Admin {
 			);
 		}
 
-		if ( ! geobuddy_check_gd_stepwise_form_exists() ) {
-			// Register a single setting for all options.
-			register_setting(
-				'geobuddy_options',
-				'bd_stepwise_settings',
-				array(
-					'sanitize_callback' => array( $this, 'sanitize_stepwise_settings' ),
-				)
+
+		// Register a single setting for all options.
+		register_setting(
+			'geobuddy_options',
+			'bd_stepwise_settings',
+			array(
+				'sanitize_callback' => array( $this, 'sanitize_stepwise_settings' ),
+			)
+		);
+
+		// Register a Stepwise form setting group.
+		register_setting(
+			'geobuddy_options',
+			'bd_stepwise_style',
+			array( 'sanitize_callback' => array( $this, 'sanitize_geobuddy_stepwise_form' ) )
+		);
+
+		// Add settings section.
+		add_settings_section(
+			'geobuddy_stepwise_form_fields_section',
+			__( 'Geodirectory Stepwise Forms Setting', 'geobuddy' ),
+			array( $this, 'stepwise_form_fields_section_callback' ),
+			'geobuddy_stepwise_form'
+		);
+
+		add_settings_field(
+			'geobuddy_field_',
+			'Form Style',
+			array( $this, 'geobuddy_stepwise_form_fields_callback' ),
+			'geobuddy_stepwise_form',
+			'geobuddy_stepwise_form_fields_section',
+			array( 'field_id' => 'bd_stepwise_slide_style' )
+		);
+
+		$gd_color_array = array( 'active', 'completed' );
+
+		foreach ( $gd_color_array as $gd_color ) {
+			// Define an array of color settings.
+			$gd_color_array = array(
+				'active'    => __( 'Active Step Color', 'geobuddy' ),
+				'completed' => __( 'Completed Step Color', 'geobuddy' ),
 			);
 
-			// Register a Stepwise form setting group.
-			register_setting(
-				'geobuddy_options',
-				'bd_stepwise_style',
-				array( 'sanitize_callback' => array( $this, 'sanitize_geobuddy_stepwise_form' ) )
-			);
-
-			// Add settings section.
-			add_settings_section(
-				'geobuddy_stepwise_form_fields_section',
-				__( 'Geodirectory Stepwise Forms Setting', 'geobuddy' ),
-				array( $this, 'stepwise_form_fields_section_callback' ),
-				'geobuddy_stepwise_form'
-			);
-
-			add_settings_field(
-				'geobuddy_field_',
-				'Form Style',
-				array( $this, 'geobuddy_stepwise_form_fields_callback' ),
-				'geobuddy_stepwise_form',
-				'geobuddy_stepwise_form_fields_section',
-				array( 'field_id' => 'bd_stepwise_slide_style' )
-			);
-
-			$gd_color_array = array( 'active', 'completed' );
-
-			foreach ( $gd_color_array as $gd_color ) {
-				// Define an array of color settings.
-				$gd_color_array = array(
-					'active'    => __( 'Active Step Color', 'geobuddy' ),
-					'completed' => __( 'Completed Step Color', 'geobuddy' ),
+			foreach ( $gd_color_array as $key => $label ) {
+				// Register each color setting.
+				register_setting(
+					'geobuddy_options',
+					"bd_{$key}_step_color",
+					array(
+						'sanitize_callback' => 'sanitize_hex_color',
+					)
 				);
 
-				foreach ( $gd_color_array as $key => $label ) {
-					// Register each color setting.
-					register_setting(
-						'geobuddy_options',
-						"bd_{$key}_step_color",
-						array(
-							'sanitize_callback' => 'sanitize_hex_color',
-						)
-					);
-
-					// Add a settings field for each color.
-					add_settings_field(
-						"geobuddy_field_{$key}_step_color",
-						$label,
-						array( $this, 'geobuddy_stepwise_form_color_fields_callback' ),
-						'geobuddy_stepwise_form',
-						'geobuddy_stepwise_form_fields_section',
-						array(
-							'field_id'  => "bd_{$key}_step_color",
-							'label_for' => "bd-gsf-{$key}-steps-color",
-						)
-					);
-				}
+				// Add a settings field for each color.
+				add_settings_field(
+					"geobuddy_field_{$key}_step_color",
+					$label,
+					array( $this, 'geobuddy_stepwise_form_color_fields_callback' ),
+					'geobuddy_stepwise_form',
+					'geobuddy_stepwise_form_fields_section',
+					array(
+						'field_id'  => "bd_{$key}_step_color",
+						'label_for' => "bd-gsf-{$key}-steps-color",
+					)
+				);
 			}
 		}
+		
 	}
 
 	/**
@@ -256,10 +256,11 @@ class Geobuddy_Admin {
 	 */
 	public function sanitize_stepwise_settings( $input ) {
 		// Fetch individual settings for colors.
+		$bd_stepwise_style    = get_option( 'bd_stepwise_style', 'stepwise' ); // Default color.
 		$active_step_color    = get_option( 'bd_active_step_color', '#ff9800' ); // Default color.
 		$completed_step_color = get_option( 'bd_completed_step_color', '#07b51b' ); // Default color.
 		$default_settings     = array(
-			'design'               => 'stepwise',
+			'design'               => $bd_stepwise_style,
 			'active_step_color'    => $active_step_color,
 			'completed_step_color' => $completed_step_color,
 		);
@@ -274,7 +275,6 @@ class Geobuddy_Admin {
 		// Return as a JSON-encoded string.
 		return wp_json_encode( $sanitized_settings );
 	}
-
 
 	/**
 	 * Section callback
@@ -388,4 +388,83 @@ class Geobuddy_Admin {
 
 		return $sanitized_input;
 	}
+
+	/**
+	 * Updates the 'bd_stepwise_settings' option with the value of 'bd_stepwise_style'.
+	 *
+	 * Ensures the 'design' key in 'bd_stepwise_settings' reflects the value of 'bd_stepwise_style'.
+	 *
+	 * @return void
+	 */
+	public function gb_stepwise_form_style_setting_updation() {
+		// Get the current value of the 'bd_stepwise_style' option.
+		$bd_stepwise_style = get_option( 'bd_stepwise_style' );
+
+		// Get the current value of the 'bd_stepwise_settings' option or initialize it as an array.
+		$bd_stepwise_settings = get_option( 'bd_stepwise_settings', [] );
+
+		// Ensure 'bd_stepwise_settings' is an array to avoid issues.
+		if ( ! is_array( $bd_stepwise_settings ) ) {
+			$bd_stepwise_settings = [];
+		}
+
+		// Update the 'design' key in 'bd_stepwise_settings' with the value of 'bd_stepwise_style'.
+		$bd_stepwise_settings['design'] = $bd_stepwise_style;
+
+		// Save the updated 'bd_stepwise_settings' option back to the database.
+		update_option( 'bd_stepwise_settings', $bd_stepwise_settings );
+	}
+
+	/**
+	 * Updates the 'bd_stepwise_settings' option with the value of 'bd_active_step_color'.
+	 *
+	 * Ensures the 'design' key in 'bd_stepwise_settings' reflects the value of 'bd_active_step_color'.
+	 *
+	 * @return void
+	 */
+	public function gb_stepwise_form_active_step_color_setting_updation() {
+		// Get the current value of the 'bd_active_step_color' option.
+		$bd_active_step_color = get_option( 'bd_active_step_color' );
+
+		// Get the current value of the 'bd_stepwise_settings' option or initialize it as an array.
+		$bd_stepwise_settings = get_option( 'bd_stepwise_settings', [] );
+
+		// Ensure 'bd_stepwise_settings' is an array to avoid issues.
+		if ( ! is_array( $bd_stepwise_settings ) ) {
+			$bd_stepwise_settings = [];
+		}
+
+		// Update the 'active_step_color' key in 'bd_stepwise_settings' with the value of 'bd_active_step_color'.
+		$bd_stepwise_settings['active_step_color'] = $bd_active_step_color;
+
+		// Save the updated 'bd_stepwise_settings' option back to the database.
+		update_option( 'bd_stepwise_settings', $bd_stepwise_settings );
+	}
+
+	/**
+	 * Updates the 'bd_stepwise_settings' option with the value of 'bd_completed_step_color'.
+	 *
+	 * Ensures the 'design' key in 'bd_stepwise_settings' reflects the value of 'bd_completed_step_color'.
+	 *
+	 * @return void
+	 */
+	public function gb_stepwise_form_completed_step_color_setting_updation() {
+		// Get the current value of the 'bd_completed_step_color' option.
+		$bd_completed_step_color = get_option( 'bd_completed_step_color' );
+
+		// Get the current value of the 'bd_stepwise_settings' option or initialize it as an array.
+		$bd_stepwise_settings = get_option( 'bd_stepwise_settings', [] );
+
+		// Ensure 'bd_stepwise_settings' is an array to avoid issues.
+		if ( ! is_array( $bd_stepwise_settings ) ) {
+			$bd_stepwise_settings = [];
+		}
+
+		// Update the 'completed_step_color' key in 'bd_stepwise_settings' with the value of 'bd_completed_step_color'.
+		$bd_stepwise_settings['completed_step_color'] = $bd_completed_step_color;
+
+		// Save the updated 'bd_stepwise_settings' option back to the database.
+		update_option( 'bd_stepwise_settings', $bd_stepwise_settings );
+	}
+
 }
