@@ -245,7 +245,32 @@ class Geobuddy_Admin {
 				);
 			}
 		}
-		
+
+		if ( geobuddy_check_gd_announcement_bar_exists() ) {
+			// Register a Stepwise form setting group.
+			register_setting(
+				'geobuddy_options',
+				'message_announcement_setting_text',
+				array( 'sanitize_callback' => array( $this, 'sanitize_announcement_bar' ) )
+			);
+
+			// Add settings section.
+			add_settings_section(
+				'geobuddy_announcement_bar_fields_section',
+				__( 'Announcement Settings', 'geobuddy' ),
+				array( $this, 'announcement_bar_fields_section_callback' ),
+				'message_announcement_setting_text'
+			);
+
+			add_settings_field(
+				'geobuddy_field_',
+				'Announcement Text',
+				array( $this, 'geobuddy_announcement_bar_fields_callback' ),
+				'message_announcement_setting_text',
+				'geobuddy_announcement_bar_fields_section',
+				array( 'field_id' => 'geobuddy_announcement_bar' )
+			);
+		}
 	}
 
 	/**
@@ -280,14 +305,21 @@ class Geobuddy_Admin {
 	 * Section callback
 	 */
 	public function custom_fields_section_callback() {
-		echo '<p>' . esc_html_e( 'Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy' ) . '</p>';
+		echo '<p>' . esc_html__( 'Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy' ) . '</p>';
 	}
 
 	/**
 	 * Section callback
 	 */
 	public function stepwise_form_fields_section_callback() {
-		echo '<p>' . esc_html_e( 'Geodirectory Stepwise Forms Fields', 'geobuddy' ) . '</p>';
+		echo '<p>' . esc_html__( 'Geodirectory Stepwise Forms Fields', 'geobuddy' ) . '</p>';
+	}
+
+	/**
+	 * Section callback
+	 */
+	public function announcement_bar_fields_section_callback() {
+		echo '<p>' . esc_html__( 'Enter the announcement message you want to display.', 'geobuddy' ) . '</p>';
 	}
 
 	/**
@@ -339,6 +371,17 @@ class Geobuddy_Admin {
 		<?php
 	}
 
+
+	/**
+	 * Field callback.
+	 */
+	public function geobuddy_announcement_bar_fields_callback() {
+		$get_text = get_option( 'message_announcement_setting_text', 'announcement message' );
+		?>
+		<input type="text" name="message_announcement_setting_text" value="<?php echo esc_attr( $get_text ); ?>">
+		<?php
+	}
+
 	/**
 	 * Callback function to render color input fields.
 	 *
@@ -387,6 +430,23 @@ class Geobuddy_Admin {
 		$sanitized_input = sanitize_text_field( $input );
 
 		return $sanitized_input;
+	}
+
+	/**
+	 * Sanitize the announcement bar input.
+	 *
+	 * @param array $input Input data.
+	 *
+	 * @return array Sanitized data.
+	 */
+	public function sanitize_announcement_bar( $input ) {
+
+		echo '<pre>';
+		print_r( $input );
+		echo '</pre>';
+		$sanitized = sanitize_text_field( $input );
+
+		return $sanitized;
 	}
 
 	/**

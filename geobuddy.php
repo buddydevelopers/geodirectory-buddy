@@ -88,6 +88,23 @@ function geobuddy_check_gd_stepwise_form_exists() {
 	return false;
 }
 
+/**
+ * Check if the GD Announcement Bar class exists.
+ *
+ * @since 1.0.0
+ *
+ * @return bool True if the class exists, false otherwise.
+ */
+function geobuddy_check_gd_announcement_bar_exists() {
+	// Check if the GD_STEPWISE_FORM class exists.
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	if ( is_plugin_active( 'geobuddy-announcement-bar/class-announcement-bar.php' )) {
+		return true;
+	}
+
+	return false;
+}
+
 
 /**
  * Begins execution of the plugin.
