@@ -75,7 +75,7 @@ class Geobuddy_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		if( isset( $geobuddy_page ) && 'geobuddy' === $geobuddy_page ) {
+		if( isset( $geobuddy_page ) && ( 'geobuddy' === $geobuddy_page || 'geobuddy-setting' === $geobuddy_page ) ) {
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/geobuddy-admin.css', array(), $this->version, 'all' );
 		}
 	}
@@ -99,7 +99,7 @@ class Geobuddy_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		if( isset( $geobuddy_page ) && 'geobuddy' === $geobuddy_page ) {
+		if( isset( $geobuddy_page ) && ( 'geobuddy' === $geobuddy_page || 'geobuddy-setting' === $geobuddy_page ) ) {
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/geobuddy-admin.js', array( 'jquery' ), $this->version, false );
 		}
 	}
@@ -116,7 +116,7 @@ class Geobuddy_Admin {
 			__( 'GeoBuddy', 'geobuddy' ),         // Menu title.
 			'manage_options',                    // Capability required.
 			'geobuddy',                         // Menu slug.
-			array( $this, 'display_plugin_welcome_page' ), // Callback function.
+			array( $this, 'geobuddy_admin_welcome_page' ), // Callback function.
 			'dashicons-admin-site',             // Icon.
 			25                                  // Position in menu.
 		);
@@ -128,7 +128,7 @@ class Geobuddy_Admin {
 			__( 'Welcome', 'geobuddy' ),         // Menu title.
 			'manage_options',                    // Capability required.
 			'geobuddy',                         // Menu slug (same as parent).
-			array( $this, 'display_plugin_welcome_page' ) // Callback function.
+			array( $this, 'geobuddy_admin_welcome_page' ) // Callback function.
 		);
 
 		// Add only one submenu item that matches the parent.
@@ -138,7 +138,7 @@ class Geobuddy_Admin {
 			__( 'Settings', 'geobuddy' ),         // Menu title.
 			'manage_options',                    // Capability required.
 			'geobuddy-setting',                         // Menu slug (same as parent).
-			array( $this, 'display_plugin_admin_page' ) // Callback function.
+			array( $this, 'geobuddy_admin_general_setting_page' ) // Callback function.
 		);
 
 	}
@@ -148,7 +148,7 @@ class Geobuddy_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function display_plugin_welcome_page() {
+	public function geobuddy_admin_welcome_page() {
 		include_once 'partials/geobuddy-admin-welcome-page.php';
 	}
 
@@ -157,8 +157,8 @@ class Geobuddy_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function display_plugin_admin_page() {
-		include_once 'partials/geobuddy-admin-display.php';
+	public function geobuddy_admin_general_setting_page() {
+		include_once 'partials/geobuddy-admin-general-setting.php';
 	}
 
 	/**

@@ -31,7 +31,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <li><a href="<?php echo esc_url( get_site_url() . '/wp-admin/admin.php?page=geobuddy' ); ?>" class="<?php echo (is_admin() && $_GET['page'] == 'geobuddy') ? 'active' : ''; ?>"><?php echo esc_html__('Welcome', 'geobuddy'); ?></a></li>
                 <li><a href="<?php echo esc_url( get_site_url() . '/wp-admin/admin.php?page=geobuddy-setting' ); ?>" class="<?php echo (is_admin() && $_GET['page'] == 'geobuddy-setting') ? 'active' : ''; ?>"><?php echo esc_html__('Settings', 'geobuddy'); ?></a></li>
                 <li><a href="<?php echo esc_url( get_site_url() . '/wp-admin/admin.php?page=geobuddy&tab=stepwise-form' ); ?>" class="<?php echo (is_admin() && $_GET['page'] == 'geobuddy' && isset($_GET['tab']) && $_GET['tab'] == 'stepwise-form') ? 'active' : ''; ?>"><?php echo esc_html__('Stepwise Form', 'geobuddy'); ?></a></li>
-            </ul>
+               <?php if ( geobuddy_check_gd_announcement_bar_exists() ) : ?>
+                    <li>
+                        <a href="?page=geobuddy&tab=announcement-bar" class="<?php echo 'announcement-bar' === $active_tab ? 'active' : ''; ?>">
+                            <?php esc_html_e( 'Announcement Bar', 'geobuddy' ); ?>
+                        </a>
+                    </li>
+		        <?php endif; ?>             
+    </ul>
         </div>
         <div class="geobuddy-admin-sidebar-content-wrapper">
             <div class="geobuddy-admin-main-content">
