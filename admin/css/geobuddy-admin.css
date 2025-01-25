@@ -3,13 +3,142 @@
  * included in this file.
  */
 
- .tab-content {
+.tab-content {
     margin-top: 20px;
     padding: 20px;
     background: #fff;
     border: 1px solid #ccc;
     border-top: none;
 }
+
 #adminmenu .toplevel_page_geobuddy .wp-menu-image:before {
     color: #ee8133 !important;
+}
+
+.geobuddy-admin-welcome-page .geobuddy-admin-header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    background-color: #f8e3dc;
+    color: #e85d4a;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.geobuddy-admin-container {
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /* width: 900px; */
+}
+
+.geobuddy-admin-sidebar {
+    background-color: #f8e3dc;
+    width: 200px;
+    padding: 20px;
+}
+
+.geobuddy-admin-sidebar h3 {
+    font-size: 16px;
+    color: #e85d4a;
+    margin-bottom: 20px;
+}
+
+.geobuddy-admin-sidebar ul {
+    list-style: none;
+}
+
+.geobuddy-admin-sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.geobuddy-admin-sidebar ul li a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.geobuddy-admin-sidebar ul li a.active {
+    background-color: #e85d4a;
+    color: #ffffff;
+}
+
+.geobuddy-admin-sidebar ul li a:hover {
+    background-color: #e85d4a;
+    color: #ffffff;
+}
+
+.geobuddy-admin-sidebar-content-wrapper {
+    flex: 1;
+    padding: 20px;
+}
+
+.geobuddy-admin-main-content {
+    margin-top: 20px;
+}
+
+.geobuddy-admin-main-content h2 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+.geobuddy-admin-welcome-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.geobuddy-admin-welcome-card {
+    background-color: #fef6f3;
+    border: 1px solid #f1e5e0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.geobuddy-admin-welcome-card-icon {
+    font-size: 24px;
+    color: #e85d4a;
+    margin-bottom: 10px;
+}
+
+.geobuddy-admin-welcome-card-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.geobuddy-admin-welcome-card-description {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 20px;
+}
+
+.geobuddy-admin-welcome-card-button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #e85d4a;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.geobuddy-admin-welcome-card-button:hover {
+    background-color: #d94e3d;
 }

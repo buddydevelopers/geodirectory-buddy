@@ -62,6 +62,7 @@ class Geobuddy_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
+		$geobuddy_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -74,8 +75,9 @@ class Geobuddy_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/geobuddy-admin.css', array(), $this->version, 'all' );
+		if( isset( $geobuddy_page ) && 'geobuddy' === $geobuddy_page ) {
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/geobuddy-admin.css', array(), $this->version, 'all' );
+		}
 	}
 
 	/**
@@ -84,7 +86,8 @@ class Geobuddy_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
+		$geobuddy_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
+		
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -96,8 +99,9 @@ class Geobuddy_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/geobuddy-admin.js', array( 'jquery' ), $this->version, false );
+		if( isset( $geobuddy_page ) && 'geobuddy' === $geobuddy_page ) {
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/geobuddy-admin.js', array( 'jquery' ), $this->version, false );
+		}
 	}
 
 	/**
@@ -112,9 +116,19 @@ class Geobuddy_Admin {
 			__( 'GeoBuddy', 'geobuddy' ),         // Menu title.
 			'manage_options',                    // Capability required.
 			'geobuddy',                         // Menu slug.
-			array( $this, 'display_plugin_admin_page' ), // Callback function.
+			array( $this, 'display_plugin_welcome_page' ), // Callback function.
 			'dashicons-admin-site',             // Icon.
 			25                                  // Position in menu.
+		);
+
+		// Add only one submenu item that matches the parent.
+		add_submenu_page(
+			'geobuddy',                         // Parent slug.
+			__( 'Welcome', 'geobuddy' ),         // Page title.
+			__( 'Welcome', 'geobuddy' ),         // Menu title.
+			'manage_options',                    // Capability required.
+			'geobuddy',                         // Menu slug (same as parent).
+			array( $this, 'display_plugin_welcome_page' ) // Callback function.
 		);
 
 		// Add only one submenu item that matches the parent.
@@ -123,9 +137,19 @@ class Geobuddy_Admin {
 			__( 'Settings', 'geobuddy' ),         // Page title.
 			__( 'Settings', 'geobuddy' ),         // Menu title.
 			'manage_options',                    // Capability required.
-			'geobuddy',                         // Menu slug (same as parent).
+			'geobuddy-setting',                         // Menu slug (same as parent).
 			array( $this, 'display_plugin_admin_page' ) // Callback function.
 		);
+
+	}
+
+	/**
+	 * Render the admin page with settings sections
+	 *
+	 * @since    1.0.0
+	 */
+	public function display_plugin_welcome_page() {
+		include_once 'partials/geobuddy-admin-welcome-page.php';
 	}
 
 	/**
