@@ -206,9 +206,63 @@
 }
 
 
+/* Setting Tab CSS */
 
+.geobuddy-admin-main-content h2{
+    font-size: 22px;
+    color: #2B2D32;
+    margin: 0px;
+    padding: 30px;
+    border-bottom: 1px #F8E3CF solid;
+}
 
+.geobuddy-admin-main-content p{
+    margin: 0px;
+    padding: 15px 30px 0;
+    font-size: 15px;
+}
 
+.geobuddy-admin-main-content .form-table{
+    padding: 30px;
+    display: block;
+}
 
+.geobuddy-admin-main-content .form-table tbody{
+    display: block;
+}
 
+.geobuddy-admin-main-content .form-table tbody tr{
+    background: #FFF9F3;
+    display: block;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+.geobuddy-admin-main-content .form-table tbody th,
+.geobuddy-admin-main-content .form-table tbody td{
+    padding: 20px;
+}
+
+.geobuddy-admin-main-content .form-table tbody input[type="checkbox"]{
+    height: 20px;
+    width: 20px;
+}
+
+.geobuddy-admin-main-content .form-table tbody input[type="checkbox"]:checked::before{
+    height: 30px;
+    width: 24px;
+}
+
+.geobuddy-admin-main-content form .submit{
+    padding: 0 30px 30px;
+    margin: 0px;
+}
+
+.geobuddy-admin-main-content form .submit #submit{
+    background: #FF8251;
+    border-color: #FF8251;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 5px 30px;
+}
 
