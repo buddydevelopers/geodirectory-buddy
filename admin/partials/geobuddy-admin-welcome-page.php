@@ -42,33 +42,43 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
         <div class="geobuddy-admin-sidebar-content-wrapper">
             <div class="geobuddy-admin-main-content">
-                <h2><?php echo esc_html__('Welcome', 'geobuddy'); ?></h2>
-                <div class="geobuddy-admin-welcome-grid">
-                    <div class="geobuddy-admin-welcome-card">
-                        <div class="geobuddy-admin-welcome-card-icon" aria-hidden="true">📄</div>
-                        <div class="geobuddy-admin-welcome-card-title"><?php echo esc_html__('Documentation', 'geobuddy'); ?></div>
-                        <div class="geobuddy-admin-welcome-card-description"><?php echo esc_html__('Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Donec At Ipsum Quis Ex Commodo Consectetur.', 'geobuddy'); ?></div>
-                        <a href="#" target="_blank" class="geobuddy-admin-welcome-card-button"><?php echo esc_html__('View Document', 'geobuddy'); ?></a>
+                <div class="geobuddy-title-row"><h2><?php echo esc_html__('Welcome', 'geobuddy'); ?></h2></div>
+                    <div class="geobuddy-admin-content-wrap">
+                        <div class="geobuddy-admin-welcome-grid">
+                            <div class="geobuddy-admin-welcome-card">
+                                <div class="geobuddy-admin-icon-box">
+                                    <div class="geobuddy-admin-welcome-card-icon"><span class="dashicons dashicons-media-document"></span></div>
+                                    <div class="geobuddy-admin-welcome-card-title"><?php echo esc_html__('Documentation', 'geobuddy'); ?></div>
+                                </div>   
+                                <div class="geobuddy-admin-welcome-card-description"><?php echo esc_html__('Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Donec At Ipsum Quis Ex Commodo Consectetur.', 'geobuddy'); ?></div>
+                                <a href="#" target="_blank" class="geobuddy-admin-welcome-card-button"><?php echo esc_html__('View Document', 'geobuddy'); ?></a>
+                            </div>
+                            <div class="geobuddy-admin-welcome-card">
+                                <div class="geobuddy-admin-icon-box">
+                                    <div class="geobuddy-admin-welcome-card-icon"><span class="dashicons dashicons-buddicons-replies"></span></div>
+                                    <div class="geobuddy-admin-welcome-card-title"><?php echo esc_html__('Contribute To GeoBuddy', 'geobuddy'); ?></div>
+                                </div>
+                                <div class="geobuddy-admin-welcome-card-description"><?php echo esc_html__('Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Donec At Ipsum Quis Ex Commodo Consectetur.', 'geobuddy'); ?></div>
+                                <a href="#" target="_blank" class="geobuddy-admin-welcome-card-button"><?php echo esc_html__('Report A Bug', 'geobuddy'); ?></a>
+                            </div>
+                            <div class="geobuddy-admin-welcome-card">
+                                <div class="geobuddy-admin-icon-box">
+                                    <div class="geobuddy-admin-welcome-card-icon"><span class="dashicons dashicons-phone"></span></div>
+                                    <div class="geobuddy-admin-welcome-card-title"><?php echo esc_html__('Need Help?', 'geobuddy'); ?></div>
+                                </div>
+                                <div class="geobuddy-admin-welcome-card-description"><?php echo esc_html__('Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Donec At Ipsum Quis Ex Commodo Consectetur.', 'geobuddy'); ?></div>
+                                <a href="#" target="_blank" class="geobuddy-admin-welcome-card-button"><?php echo esc_html__('Submit A Ticket', 'geobuddy'); ?></a>
+                            </div>
+                            <div class="geobuddy-admin-welcome-card">
+                                <div class="geobuddy-admin-icon-box">
+                                    <div class="geobuddy-admin-welcome-card-icon"><span class="dashicons dashicons-facebook-alt"></span></div>
+                                    <div class="geobuddy-admin-welcome-card-title"><?php echo esc_html__('Join The Community', 'geobuddy'); ?></div>
+                                </div>
+                                <div class="geobuddy-admin-welcome-card-description"><?php echo esc_html__('Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Donec At Ipsum Quis Ex Commodo Consectetur.', 'geobuddy'); ?></div>
+                                <a href="#" target="_blank" class="geobuddy-admin-welcome-card-button"><?php echo esc_html__('Join Facebook Community', 'geobuddy'); ?></a>
+                            </div>
                     </div>
-                    <div class="geobuddy-admin-welcome-card">
-                        <div class="geobuddy-admin-welcome-card-icon" aria-hidden="true">🐞</div>
-                        <div class="geobuddy-admin-welcome-card-title"><?php echo esc_html__('Contribute To GeoBuddy', 'geobuddy'); ?></div>
-                        <div class="geobuddy-admin-welcome-card-description"><?php echo esc_html__('Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Donec At Ipsum Quis Ex Commodo Consectetur.', 'geobuddy'); ?></div>
-                        <a href="#" target="_blank" class="geobuddy-admin-welcome-card-button"><?php echo esc_html__('Report A Bug', 'geobuddy'); ?></a>
-                    </div>
-                    <div class="geobuddy-admin-welcome-card">
-                        <div class="geobuddy-admin-welcome-card-icon" aria-hidden="true">📩</div>
-                        <div class="geobuddy-admin-welcome-card-title"><?php echo esc_html__('Need Help?', 'geobuddy'); ?></div>
-                        <div class="geobuddy-admin-welcome-card-description"><?php echo esc_html__('Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Donec At Ipsum Quis Ex Commodo Consectetur.', 'geobuddy'); ?></div>
-                        <a href="#" target="_blank" class="geobuddy-admin-welcome-card-button"><?php echo esc_html__('Submit A Ticket', 'geobuddy'); ?></a>
-                    </div>
-                    <div class="geobuddy-admin-welcome-card">
-                        <div class="geobuddy-admin-welcome-card-icon" aria-hidden="true">👥</div>
-                        <div class="geobuddy-admin-welcome-card-title"><?php echo esc_html__('Join The Community', 'geobuddy'); ?></div>
-                        <div class="geobuddy-admin-welcome-card-description"><?php echo esc_html__('Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Donec At Ipsum Quis Ex Commodo Consectetur.', 'geobuddy'); ?></div>
-                        <a href="#" target="_blank" class="geobuddy-admin-welcome-card-button"><?php echo esc_html__('Join Facebook Community', 'geobuddy'); ?></a>
-                    </div>
-                </div>
+               </div>
             </div>
         </div>
     </div>
