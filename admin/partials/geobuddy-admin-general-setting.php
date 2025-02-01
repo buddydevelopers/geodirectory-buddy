@@ -12,6 +12,7 @@
 $active_tab = filter_input( INPUT_GET, 'tab' ) ? filter_input( INPUT_GET, 'tab' ) : 'general';
 ?>
 <div class="geobuddy-admin-welcome-page wrap">
+    <h2 style="display: none;"><?php echo esc_html__('Geo', 'geobuddy'); ?><span><?php echo esc_html__('Buddy', 'geobuddy'); ?></span></h2>
     <div class="geobuddy-admin-header">
         <div class="geobuddy-admin-logo">
             <h3><?php echo esc_html__('Geo', 'geobuddy'); ?><span><?php echo esc_html__('Buddy', 'geobuddy'); ?></span></h3>
@@ -27,8 +28,8 @@ $active_tab = filter_input( INPUT_GET, 'tab' ) ? filter_input( INPUT_GET, 'tab' 
         <div class="geobuddy-admin-sidebar">
             <ul>
                 <li><a href="<?php echo esc_url( get_site_url() . '/wp-admin/admin.php?page=geobuddy' ); ?>" class="<?php echo (is_admin() && $_GET['page'] == 'geobuddy') ? 'active' : ''; ?>"><?php echo esc_html__('Welcome', 'geobuddy'); ?></a></li>
-                <li><a href="<?php echo esc_url( get_site_url() . '/wp-admin/admin.php?page=geobuddy-setting' ); ?>" class="<?php echo (is_admin() && $_GET['page'] == 'geobuddy-setting') ? 'active' : ''; ?>"><?php echo esc_html__('Settings', 'geobuddy'); ?></a></li>
-                <li><a href="<?php echo esc_url( get_site_url() . '/wp-admin/admin.php?page=geobuddy-setting&tab=stepwise-form' ); ?>" class="<?php echo (is_admin() && $_GET['page'] == 'geobuddy' && isset($_GET['tab']) && $_GET['tab'] == 'stepwise-form') ? 'active' : ''; ?>"><?php echo esc_html__('Stepwise Form', 'geobuddy'); ?></a></li>
+                <li><a href="<?php echo esc_url( get_site_url() . '/wp-admin/admin.php?page=geobuddy-setting' ); ?>" class="<?php echo (is_admin() && $_GET['page'] == 'geobuddy-setting' && empty($_GET['tab']) ) ? 'active' : ''; ?>"><?php echo esc_html__('General', 'geobuddy'); ?></a></li>
+                <li><a href="<?php echo esc_url( get_site_url() . '/wp-admin/admin.php?page=geobuddy-setting&tab=stepwise-form' ); ?>" class="<?php echo (is_admin() && $_GET['page'] == 'geobuddy-setting' && !empty($_GET['tab']) && $_GET['tab'] == 'stepwise-form') ? 'active' : ''; ?>"><?php echo esc_html__('Stepwise Form', 'geobuddy'); ?></a></li>
                 <?php if ( geobuddy_check_gd_announcement_bar_exists() ) : ?>
                     <li>
                         <a href="?page=geobuddy&tab=announcement-bar" class="<?php echo 'announcement-bar' === $active_tab ? 'active' : ''; ?>">
@@ -40,15 +41,43 @@ $active_tab = filter_input( INPUT_GET, 'tab' ) ? filter_input( INPUT_GET, 'tab' 
         </div>
         <div class="geobuddy-admin-sidebar-content-wrapper">
             <div class="geobuddy-admin-main-content">
-              <form method="post" action="options.php">
-					<?php
-					do_action( 'geobuddy_general_setting_form_before_form_fields' );
-					settings_fields( 'geobuddy_options' );
-					do_settings_sections( 'geobuddy' );
-					do_action( 'geobuddy_general_setting_form_after_form_fields' );
-					submit_button();
-					?>
-				</form>
+                <?php if ( 'general' === $active_tab ) { ?>
+                    <div class="general-settings">
+                        <form method="post" action="options.php">
+                            <?php
+                            do_action( 'geobuddy_general_setting_form_before_form_fields' );
+                            settings_fields( 'geobuddy_options' );
+                            do_settings_sections( 'geobuddy' );
+                            do_action( 'geobuddy_general_setting_form_after_form_fields' );
+                            submit_button();
+                            ?>
+                        </form>
+                    </div>
+                <?php } elseif ( 'stepwise-form' === $active_tab ) { ?>
+                    <div class="general-settings">
+                        <form method="post" action="options.php">
+                            <?php
+                            do_action( 'geobuddy_stepwise_form_setting_before_form_fields' );
+                            settings_fields( 'geobuddy_options' );
+                            do_settings_sections( 'geobuddy_stepwise_form' );
+                            do_action( 'geobuddy_stepwise_form_setting_after_form_fields' );
+                            submit_button();
+                            ?>
+                        </form>
+                    </div>
+                <?php } elseif ( 'announcement-bar' === $active_tab ) { ?>
+                    <div class="general-settings">
+                        <form method="post" action="options.php">
+                            <?php
+                            do_action( 'geobuddy_announcement_bar_setting_before_form_fields' );
+                            settings_fields( 'geobuddy_options' );
+                            do_settings_sections( 'message_announcement_setting_text' );
+                            do_action( 'geobuddy_announcement_bar_setting_after_form_fields' );
+                            submit_button();
+                            ?>
+                        </form>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </div>

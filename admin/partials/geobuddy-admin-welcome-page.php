@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="geobuddy-admin-welcome-page wrap">
+    <h2 style="display: none;"><?php echo esc_html__('Geo', 'geobuddy'); ?><span><?php echo esc_html__('Buddy', 'geobuddy'); ?></span></h2>
     <div class="geobuddy-admin-header">
         <div class="geobuddy-admin-logo">
             <h3><?php echo esc_html__('Geo', 'geobuddy'); ?><span><?php echo esc_html__('Buddy', 'geobuddy'); ?></span></h3>
@@ -38,11 +39,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                         </a>
                     </li>
 		        <?php endif; ?>             
-    </ul>
+            </ul>
         </div>
         <div class="geobuddy-admin-sidebar-content-wrapper">
             <div class="geobuddy-admin-main-content">
-                <div class="geobuddy-title-row"><h2><?php echo esc_html__('Welcome', 'geobuddy'); ?></h2></div>
+                <div class="geobuddy-title-row"><h3><?php echo esc_html__('Welcome', 'geobuddy'); ?></h3></div>
                     <div class="geobuddy-admin-content-wrap">
                         <div class="geobuddy-admin-welcome-grid">
                             <div class="geobuddy-admin-welcome-card">
