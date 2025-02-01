@@ -62,6 +62,7 @@ class Geobuddy_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
+		$geobuddy_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -74,8 +75,9 @@ class Geobuddy_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/geobuddy-admin.css', array(), $this->version, 'all' );
+		if( isset( $geobuddy_page ) && ( 'geobuddy' === $geobuddy_page || 'geobuddy-setting' === $geobuddy_page ) ) {
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/geobuddy-admin.css', array(), $this->version, 'all' );
+		}
 	}
 
 	/**
@@ -84,7 +86,8 @@ class Geobuddy_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
+		$geobuddy_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
+		
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -96,8 +99,9 @@ class Geobuddy_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/geobuddy-admin.js', array( 'jquery' ), $this->version, false );
+		if( isset( $geobuddy_page ) && ( 'geobuddy' === $geobuddy_page || 'geobuddy-setting' === $geobuddy_page ) ) {
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/geobuddy-admin.js', array( 'jquery' ), $this->version, false );
+		}
 	}
 
 	/**
@@ -112,9 +116,19 @@ class Geobuddy_Admin {
 			__( 'GeoBuddy', 'geobuddy' ),         // Menu title.
 			'manage_options',                    // Capability required.
 			'geobuddy',                         // Menu slug.
-			array( $this, 'display_plugin_admin_page' ), // Callback function.
+			array( $this, 'geobuddy_admin_welcome_page' ), // Callback function.
 			'dashicons-admin-site',             // Icon.
 			25                                  // Position in menu.
+		);
+
+		// Add only one submenu item that matches the parent.
+		add_submenu_page(
+			'geobuddy',                         // Parent slug.
+			__( 'Welcome', 'geobuddy' ),         // Page title.
+			__( 'Welcome', 'geobuddy' ),         // Menu title.
+			'manage_options',                    // Capability required.
+			'geobuddy',                         // Menu slug (same as parent).
+			array( $this, 'geobuddy_admin_welcome_page' ) // Callback function.
 		);
 
 		// Add only one submenu item that matches the parent.
@@ -123,9 +137,10 @@ class Geobuddy_Admin {
 			__( 'Settings', 'geobuddy' ),         // Page title.
 			__( 'Settings', 'geobuddy' ),         // Menu title.
 			'manage_options',                    // Capability required.
-			'geobuddy',                         // Menu slug (same as parent).
-			array( $this, 'display_plugin_admin_page' ) // Callback function.
+			'geobuddy-setting',                         // Menu slug (same as parent).
+			array( $this, 'geobuddy_admin_general_setting_page' ) // Callback function.
 		);
+
 	}
 
 	/**
@@ -133,8 +148,17 @@ class Geobuddy_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function display_plugin_admin_page() {
-		include_once 'partials/geobuddy-admin-display.php';
+	public function geobuddy_admin_welcome_page() {
+		include_once 'partials/geobuddy-admin-welcome-page.php';
+	}
+
+	/**
+	 * Render the admin page with settings sections
+	 *
+	 * @since    1.0.0
+	 */
+	public function geobuddy_admin_general_setting_page() {
+		include_once 'partials/geobuddy-admin-general-setting.php';
 	}
 
 	/**
@@ -245,7 +269,32 @@ class Geobuddy_Admin {
 				);
 			}
 		}
-		
+
+		if ( geobuddy_check_gd_announcement_bar_exists() ) {
+			// Register a Stepwise form setting group.
+			register_setting(
+				'geobuddy_options',
+				'message_announcement_setting_text',
+				array( 'sanitize_callback' => array( $this, 'sanitize_announcement_bar' ) )
+			);
+
+			// Add settings section.
+			add_settings_section(
+				'geobuddy_announcement_bar_fields_section',
+				__( 'Announcement Settings', 'geobuddy' ),
+				array( $this, 'announcement_bar_fields_section_callback' ),
+				'message_announcement_setting_text'
+			);
+
+			add_settings_field(
+				'geobuddy_field_',
+				'Announcement Text',
+				array( $this, 'geobuddy_announcement_bar_fields_callback' ),
+				'message_announcement_setting_text',
+				'geobuddy_announcement_bar_fields_section',
+				array( 'field_id' => 'geobuddy_announcement_bar' )
+			);
+		}
 	}
 
 	/**
@@ -280,14 +329,21 @@ class Geobuddy_Admin {
 	 * Section callback
 	 */
 	public function custom_fields_section_callback() {
-		echo '<p>' . esc_html_e( 'Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy' ) . '</p>';
+		echo '<p>' . esc_html__( 'Enable or disable custom fields for your GeoDirectory listings.', 'geobuddy' ) . '</p>';
 	}
 
 	/**
 	 * Section callback
 	 */
 	public function stepwise_form_fields_section_callback() {
-		echo '<p>' . esc_html_e( 'Geodirectory Stepwise Forms Fields', 'geobuddy' ) . '</p>';
+		echo '<p>' . esc_html__( 'Geodirectory Stepwise Forms Fields', 'geobuddy' ) . '</p>';
+	}
+
+	/**
+	 * Section callback
+	 */
+	public function announcement_bar_fields_section_callback() {
+		echo '<p>' . esc_html__( 'Enter the announcement message you want to display.', 'geobuddy' ) . '</p>';
 	}
 
 	/**
@@ -339,6 +395,17 @@ class Geobuddy_Admin {
 		<?php
 	}
 
+
+	/**
+	 * Field callback.
+	 */
+	public function geobuddy_announcement_bar_fields_callback() {
+		$get_text = get_option( 'message_announcement_setting_text', 'announcement message' );
+		?>
+		<input type="text" name="message_announcement_setting_text" value="<?php echo esc_attr( $get_text ); ?>">
+		<?php
+	}
+
 	/**
 	 * Callback function to render color input fields.
 	 *
@@ -387,6 +454,23 @@ class Geobuddy_Admin {
 		$sanitized_input = sanitize_text_field( $input );
 
 		return $sanitized_input;
+	}
+
+	/**
+	 * Sanitize the announcement bar input.
+	 *
+	 * @param array $input Input data.
+	 *
+	 * @return array Sanitized data.
+	 */
+	public function sanitize_announcement_bar( $input ) {
+
+		echo '<pre>';
+		print_r( $input );
+		echo '</pre>';
+		$sanitized = sanitize_text_field( $input );
+
+		return $sanitized;
 	}
 
 	/**

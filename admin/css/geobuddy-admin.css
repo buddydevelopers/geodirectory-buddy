@@ -3,13 +3,266 @@
  * included in this file.
  */
 
- .tab-content {
-    margin-top: 20px;
+
+ .geobuddy-admin-welcome-page.wrap {
+    margin: 10px 20px 0 2px;
+    font-family: Nunito Sans, Helvetica, Arial, sans-serif;
+}
+
+ /* GeoBuddy Welcome Header */ 
+
+.geobuddy-admin-welcome-page .geobuddy-admin-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #fff;
+    border: 1px #F8E3CF solid;
+    font-weight: bold;
+    border-radius: 15px;
+    max-width: 1200px;
+    margin: auto;
+    margin-bottom: 50px;
+}
+
+.geobuddy-admin-logo{
+    flex: 0 0 210px;
+    padding: 30px 20px;
+    background: #ffd9b730;
+    border-right: 1px #FFD9B7 solid;
+}
+
+.geobuddy-admin-logo h3{
+    margin:0px;
+    font-size: 24px;
+    color: #000;;
+}
+.geobuddy-admin-logo h3 span{
+    color: #FF8251;
+}
+
+.geobuddy-admin-user-name{
+    width: 100%;
+}
+
+.geobuddy-admin-help-btn{
+    flex: 0 0 200px;
+    text-align: right;
     padding: 20px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-top: none;
 }
-#adminmenu .toplevel_page_geobuddy .wp-menu-image:before {
-    color: #ee8133 !important;
+
+.geobuddy-admin-help-btn a{
+    border: 1px #FF8251 solid;
+    background: #FFF5F1;
+    border-radius: 10px;
+    color: #FF8251;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 13px 30px;
+    font-weight: 500;
 }
+
+/* GeoBuddy Main Container */
+
+.geobuddy-admin-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: auto;
+    gap: 20px;
+}
+
+/* Left Side Content */
+
+.geobuddy-admin-sidebar{
+    flex: 0 0 250px;
+}
+
+.geobuddy-admin-sidebar ul{
+    margin:0px;
+    padding:0px;
+    display: block;
+}
+
+
+.geobuddy-admin-sidebar ul li {
+    margin-bottom: 5px;
+}
+
+.geobuddy-admin-sidebar ul li a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    padding: 15px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.geobuddy-admin-sidebar ul li a.active {
+    background-color: #FF8251;
+    color: #ffffff;
+}
+
+.geobuddy-admin-sidebar ul li a:hover {
+    background-color: #FF8251;
+    color: #ffffff;
+}
+
+
+
+/* Right Side Content */
+
+.geobuddy-admin-sidebar-content-wrapper {
+    flex: 1;
+    padding: 0;
+    background: #ffffff;
+    border-radius: 15px;
+    border: 1px #F8E3CF solid;
+}
+
+.geobuddy-title-row{
+    padding:30px;
+    margin:0px;
+    border-bottom: 1px #F8E3CF solid;
+}
+
+.geobuddy-title-row h2 {
+    font-size: 22px;
+    color: #2B2D32;
+    margin:0px;
+}
+
+
+.geobuddy-admin-content-wrap{
+    padding: 30px;
+}
+
+.geobuddy-admin-welcome-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.geobuddy-admin-welcome-card {
+    background-color: #FFF9F3;
+    border: 0;
+    border-radius: 20px;
+    padding: 40px;
+}
+
+
+.geobuddy-admin-welcome-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2B2D32;
+    margin-bottom: 10px;
+}
+
+.geobuddy-admin-welcome-card-description {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #585A5D;
+    margin-bottom: 30px;
+}
+
+.geobuddy-admin-welcome-card-button {
+    display: block;
+    padding: 15px;
+    background-color: #FF8251;
+    color: #ffffff;
+    font-size: 15px;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    text-align: center;
+    font-weight: 500;
+}
+
+.geobuddy-admin-welcome-card-button:hover {
+    background-color: #E97547;
+    color: #FFFfff;
+}
+
+.geobuddy-admin-icon-box{
+    display: flex    ;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.geobuddy-admin-welcome-card-icon .dashicons{
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFF;
+    border: 1px #F0F5F9 solid;
+    border-radius: 100px;
+    font-size: 24px;
+    color: #1C1B1F;
+}
+
+
+/* Setting Tab CSS */
+
+.geobuddy-admin-main-content h2{
+    font-size: 22px;
+    color: #2B2D32;
+    margin: 0px;
+    padding: 30px;
+    border-bottom: 1px #F8E3CF solid;
+}
+
+.geobuddy-admin-main-content p{
+    margin: 0px;
+    padding: 15px 30px 0;
+    font-size: 15px;
+}
+
+.geobuddy-admin-main-content .form-table{
+    padding: 30px;
+    display: block;
+}
+
+.geobuddy-admin-main-content .form-table tbody{
+    display: block;
+}
+
+.geobuddy-admin-main-content .form-table tbody tr{
+    background: #FFF9F3;
+    display: block;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+.geobuddy-admin-main-content .form-table tbody th,
+.geobuddy-admin-main-content .form-table tbody td{
+    padding: 20px;
+}
+
+.geobuddy-admin-main-content .form-table tbody input[type="checkbox"]{
+    height: 20px;
+    width: 20px;
+}
+
+.geobuddy-admin-main-content .form-table tbody input[type="checkbox"]:checked::before{
+    height: 30px;
+    width: 24px;
+}
+
+.geobuddy-admin-main-content form .submit{
+    padding: 0 30px 30px;
+    margin: 0px;
+}
+
+.geobuddy-admin-main-content form .submit #submit{
+    background: #FF8251;
+    border-color: #FF8251;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 5px 30px;
+}
+

@@ -88,6 +88,40 @@ function geobuddy_check_gd_stepwise_form_exists() {
 	return false;
 }
 
+/**
+ * Check if the GD Announcement Bar class exists.
+ *
+ * @since 1.0.0
+ *
+ * @return bool True if the class exists, false otherwise.
+ */
+function geobuddy_check_gd_announcement_bar_exists() {
+	// Check if the GD_STEPWISE_FORM class exists.
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	if ( is_plugin_active( 'geobuddy-announcement-bar/class-announcement-bar.php' )) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Generate a greeting message for the current logged-in user.
+ *
+ * @return string Greeting message with the username or "Hi, Guest" if not logged in.
+ */
+function geobuddy_get_user_greeting() {
+    $current_user = wp_get_current_user(); // Fetch current user data.
+
+    if ( $current_user->exists() ) {
+        $username = $current_user->display_name; // Get the display name of the user.
+        return sprintf( esc_html__( 'Hi, %s', 'geobuddy' ), esc_html( $username ) );
+    }
+
+    return esc_html__( 'Hi, Guest', 'geobuddy' );
+}
+
+
 
 /**
  * Begins execution of the plugin.
